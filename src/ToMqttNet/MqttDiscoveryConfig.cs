@@ -134,7 +134,7 @@ namespace ToMqttNet
 		/// A list of connections of the device to the outside world as a list of tuples [connection_type, connection_identifier]. For example the MAC address of a network interface: "connections": [["mac", "02:5b:26:a8:dc:12"]].
 		/// </summary>
 		[JsonProperty("connections")]
-		public List<string>? Connections { get; set; }
+		public List<List<string>>? Connections { get; set; }
 
 		/// <summary>
 		/// A list of IDs that uniquely identify the device. For example a serial number.
