@@ -3,6 +3,9 @@ using Newtonsoft.Json.Converters;
 
 namespace ToMqttNet
 {
+	/// <summary>
+	/// This mqtt sensor platform uses the MQTT message payload as the sensor value. If messages in this state_topic are published with RETAIN flag, the sensor will receive an instant update with last known value. Otherwise, the initial state will be undefined.
+	/// </summary>
 	public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig<MqttSensorDiscoveryConfig>
 	{
 		public override string Component => "sensor";

@@ -17,10 +17,27 @@ public class MqttDiscoveryConfigTests
 		};
 
 		// Act
-		var result = sut.ToJson();
+		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
 
 		// Assert
-		Assert.Equal("{\"component\":\"stub\"}", result);
+		Assert.Equal("stub", result["component"]!.ToString());
+	}
+
+	[Fact]
+	public void ToJson_ShouldIncludeNull()
+	{
+		// Arrange
+		var sut = new MqttStubDiscoveryConfig()
+		{
+			
+		};
+
+		// Act
+		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
+
+		// Assert
+		Assert.IsType<JValue>(result["device"]);
+		Assert.Null(((JValue)result["device"]).Value);
 	}
 
 	[Fact]
