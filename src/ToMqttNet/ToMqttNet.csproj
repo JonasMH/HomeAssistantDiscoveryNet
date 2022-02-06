@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-		<Version>0.1.1</Version>
+		<Version>0.1.2</Version>
 		<Authors>JonasMH</Authors>
 		<PackageDescription>ASP.NET Hosted MQTT Connection and models to make it easier to work with Home Assistant MQTT Discovery</PackageDescription>
 		<RepositoryUrl>https://github.com/JonasMH/ToMqttNet</RepositoryUrl>
