@@ -12,7 +12,8 @@ namespace ToMqttNet
 			{
 				NamingStrategy = new CamelCaseNamingStrategy(),
 			},
-			Formatting = Formatting.None
+			Formatting = Formatting.None,
+			NullValueHandling = NullValueHandling.Ignore,
 		};
 		public static string ToJson<T>(this T config) where T : MqttDiscoveryConfig<T>
 		{
