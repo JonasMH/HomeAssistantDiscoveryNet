@@ -24,7 +24,7 @@ public class MqttDiscoveryConfigTests
 	}
 
 	[Fact]
-	public void ToJson_ShouldIncludeNull()
+	public void ToJson_ShouldIgnoreNull()
 	{
 		// Arrange
 		var sut = new MqttStubDiscoveryConfig()
@@ -36,8 +36,7 @@ public class MqttDiscoveryConfigTests
 		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
 
 		// Assert
-		Assert.IsType<JValue>(result["device"]);
-		Assert.Null(((JValue)result["device"]).Value);
+		Assert.Null(result["device"]);
 	}
 
 	[Fact]
