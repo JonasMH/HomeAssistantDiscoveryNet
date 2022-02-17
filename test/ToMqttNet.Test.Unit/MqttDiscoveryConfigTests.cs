@@ -45,7 +45,7 @@ public class MqttDiscoveryConfigTests
 		// Arrange
 		var sut = new MqttStubDiscoveryConfig()
 		{
-			AvailabliltyMode = MqttDiscoveryAvailabilityMode.Any
+			AvailabilityMode = MqttDiscoveryAvailabilityMode.Any
 		};
 
 		// Act
@@ -88,7 +88,7 @@ public class MqttDiscoveryConfigTests
 }
 
 
-public class MqttStubDiscoveryConfig : MqttDiscoveryConfig<MqttStubDiscoveryConfig>
+public class MqttStubDiscoveryConfig : MqttDiscoveryConfig
 {
 	public override string Component => "stub";
 }

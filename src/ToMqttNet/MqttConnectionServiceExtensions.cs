@@ -15,7 +15,7 @@ namespace ToMqttNet
 			Formatting = Formatting.None,
 			NullValueHandling = NullValueHandling.Ignore,
 		};
-		public static string ToJson<T>(this T config) where T : MqttDiscoveryConfig<T>
+		public static string ToJson<T>(this T config) where T : MqttDiscoveryConfig
 		{
 			return JsonConvert.SerializeObject(config, DiscoveryJsonSettings);
 		}
@@ -23,7 +23,7 @@ namespace ToMqttNet
 
 	public static class MqttConnectionServiceExtensions
 	{
-		public static Task PublishDiscoveryDocument<T>(this IMqttConnectionService connection, T config) where T : MqttDiscoveryConfig<T>
+		public static Task PublishDiscoveryDocument<T>(this IMqttConnectionService connection, T config) where T : MqttDiscoveryConfig
 		{
 			return connection.PublishAsync(
 				new MqttApplicationMessageBuilder()

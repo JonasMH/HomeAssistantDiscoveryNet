@@ -4,7 +4,52 @@ using System.Runtime.Serialization;
 
 namespace ToMqttNet
 {
-	public abstract class MqttDiscoveryConfig<T> where T : MqttDiscoveryConfig<T>
+	/*
+	 * const snakeToPascal = (string) => {
+	  return string.split("/")
+		.map(snake => snake.split("_")
+		  .map(substr => substr.charAt(0)
+			.toUpperCase() +
+			substr.slice(1))
+		  .join(""))
+		.join("/");
+	};
+$$('.config-vars>div>.config-vars-item')
+		.map(x => {
+            var typeMap = {
+                "template": "string",
+                "boolean": "bool",
+                "list": "List<>",
+                "integer": "long",
+                "float": "double"
+            };
+            
+			var result = "///<summary>";
+            result += "\n/// " + x.getElementsByClassName("config-vars-description")[0].innerText;
+            var defaultValue = x.getElementsByClassName("config-vars-required")[0].getElementsByClassName("default")[0];            
+            if(defaultValue.innerText) {
+                result += "\n/// " + defaultValue.innerText
+            }
+            defaultValue = x.getElementsByClassName("config-vars-default")[0];            
+            if(defaultValue?.innerText) {
+                result += "\n/// " + defaultValue.innerText.replace(/\n/g, "\n///")
+            }
+            var varName = x.getElementsByClassName("config-vars-label-name")[0].innerText.trim();
+            result += "\n///</summary> "
+            result += "\n[JsonProperty(\"" + varName + "\")]"
+            result += "\npublic "
+            var varType = x.getElementsByClassName("config-vars-type")[0].innerText.trim();
+			result += typeMap[varType] || varType;
+            if(x.getElementsByClassName("config-vars-required")[0].getElementsByClassName("false")[0]) {
+                result += "?";
+            }
+			result += " ";
+			result += snakeToPascal(varName);
+			result += " { get; set; }";
+			return result;
+		}).join('\n\n')
+	 */
+	public abstract class MqttDiscoveryConfig
 	{
 		[JsonProperty("name")]
 		public string? Name { get; init; }
@@ -25,7 +70,20 @@ namespace ToMqttNet
 		/// A list of MQTT topics subscribed to receive availability (online/offline) updates. Must not be used together with availability_topic
 		/// </summary>
 		[JsonProperty("availability")]
-		public List<MqttDiscoveryAvailablilty>? Availablilty { get; init; }
+		public List<MqttDiscoveryAvailablilty>? Availability { get; init; }
+
+		///<summary>
+		/// Defines a template to extract device’s availability from the availability_topic. To determine the devices’s availability result of this template will be compared to payload_available and payload_not_available.
+		///</summary> 
+		[JsonProperty("availability_template")]
+		public string? AvailabilityTemplate { get; set; }
+
+		///<summary>
+		/// The MQTT topic subscribed to receive availability (online/offline) updates. Must not be used together with availability.
+		///</summary> 
+		[JsonProperty("availability_topic")]
+		public string? AvailabilityTopic { get; set; }
+
 
 		/// <summary>
 		/// When <see cref="Availablilty"/> is configured, this controls the conditions needed to set the entity to available.
@@ -38,7 +96,7 @@ namespace ToMqttNet
 		/// </summary>
 		[JsonProperty("availability_mode")]
 		[JsonConverter(typeof(StringEnumConverter))]
-		public MqttDiscoveryAvailabilityMode? AvailabliltyMode { get; init; }
+		public MqttDiscoveryAvailabilityMode? AvailabilityMode { get; init; }
 
 		/// <summary>
 		/// <see href="https://www.home-assistant.io/docs/configuration/customizing-devices/#icon">Icon</see> for the entity.

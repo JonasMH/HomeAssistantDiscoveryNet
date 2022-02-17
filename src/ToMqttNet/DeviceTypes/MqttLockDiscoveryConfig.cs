@@ -3,30 +3,17 @@
 namespace ToMqttNet
 {
 	/// <summary>
-	/// The mqtt button platform lets you send an MQTT message when the button is pressed in the frontend or the button press service is called. This can be used to expose some service of a remote device, for example reboot.
+	/// The mqtt lock platform lets you control your MQTT enabled locks.
 	/// </summary>
-	public class MqttButtonDiscoveryConfig : MqttDiscoveryConfig
+	public class MqttLockDiscoveryConfig : MqttDiscoveryConfig
 	{
-		public override string Component => "button";
+		public override string Component => "lock";
 
 		///<summary>
-		/// Defines a template to generate the payload to send to command_topic.
-		///</summary> 
-		[JsonProperty("command_template")]
-		public string? CommandTemplate { get; set; }
-
-		///<summary>
-		/// The MQTT topic to publish commands to trigger the button.
+		/// The MQTT topic to publish commands to change the lock state.
 		///</summary> 
 		[JsonProperty("command_topic")]
-		public string? CommandTopic { get; set; }
-
-		///<summary>
-		/// The type/class of the button to set the icon in the frontend.
-		/// , default: None
-		///</summary> 
-		[JsonProperty("device_class")]
-		public string? DeviceClass { get; set; }
+		public string CommandTopic { get; set; }
 
 		///<summary>
 		/// Flag which defines if the entity should be enabled when first added.
@@ -36,7 +23,7 @@ namespace ToMqttNet
 		public bool? EnabledByDefault { get; set; }
 
 		///<summary>
-		/// The encoding of the published messages.
+		/// The encoding of the payloads received and published messages. Set to "" to disable decoding of incoming payload.
 		/// , default: utf-8
 		///</summary> 
 		[JsonProperty("encoding")]
@@ -68,11 +55,27 @@ namespace ToMqttNet
 		public string? ObjectId { get; set; }
 
 		///<summary>
+		/// Flag that defines if lock works in optimistic mode.
+		/// Default: 
+		///
+		///true if no state_topic defined, else false.
+		///</summary> 
+		[JsonProperty("optimistic")]
+		public bool? Optimistic { get; set; }
+
+		///<summary>
 		/// The payload that represents the available state.
 		/// , default: online
 		///</summary> 
 		[JsonProperty("payload_available")]
 		public string? PayloadAvailable { get; set; }
+
+		///<summary>
+		/// The payload sent to the lock to lock it.
+		/// , default: LOCK
+		///</summary> 
+		[JsonProperty("payload_lock")]
+		public string? PayloadLock { get; set; }
 
 		///<summary>
 		/// The payload that represents the unavailable state.
@@ -82,14 +85,21 @@ namespace ToMqttNet
 		public string? PayloadNotAvailable { get; set; }
 
 		///<summary>
-		/// The payload To send to trigger the button.
-		/// , default: PRESS
+		/// The payload sent to the lock to unlock it.
+		/// , default: UNLOCK
 		///</summary> 
-		[JsonProperty("payload_press")]
-		public string? PayloadPress { get; set; }
+		[JsonProperty("payload_unlock")]
+		public string? PayloadUnlock { get; set; }
 
 		///<summary>
-		/// The maximum QoS level of the state topic. Default is 0 and will also be used to publishing messages.
+		/// The payload sent to the lock to open it.
+		/// , default: OPEN
+		///</summary> 
+		[JsonProperty("payload_open")]
+		public string? PayloadOpen { get; set; }
+
+		///<summary>
+		/// The maximum QoS level of the state topic.
 		/// , default: 0
 		///</summary> 
 		[JsonProperty("qos")]
@@ -102,5 +112,30 @@ namespace ToMqttNet
 		[JsonProperty("retain")]
 		public bool? Retain { get; set; }
 
+		///<summary>
+		/// The payload sent to by the lock when it’s locked.
+		/// , default: LOCKED
+		///</summary> 
+		[JsonProperty("state_locked")]
+		public string? StateLocked { get; set; }
+
+		///<summary>
+		/// The MQTT topic subscribed to receive state updates.
+		///</summary> 
+		[JsonProperty("state_topic")]
+		public string? StateTopic { get; set; }
+
+		///<summary>
+		/// The payload sent to by the lock when it’s unlocked.
+		/// , default: UNLOCKED
+		///</summary> 
+		[JsonProperty("state_unlocked")]
+		public string? StateUnlocked { get; set; }
+
+		///<summary>
+		/// Defines a template to extract a value from the payload.
+		///</summary> 
+		[JsonProperty("value_template")]
+		public string? ValueTemplate { get; set; }
 	}
 }
