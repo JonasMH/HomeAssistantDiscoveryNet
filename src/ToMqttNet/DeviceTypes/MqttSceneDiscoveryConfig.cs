@@ -2,6 +2,7 @@
 
 namespace ToMqttNet
 {
+
 	/// <summary>
 	/// The mqtt scene platform lets you control your MQTT enabled scenes.
 	/// </summary>

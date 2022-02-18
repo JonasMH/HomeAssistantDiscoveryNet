@@ -5,7 +5,7 @@ namespace ToMqttNet
 	/// <summary>
 	/// The mqtt camera platform allows you to integrate the content of an image file sent through MQTT into Home Assistant as a camera. Every time a message under the topic in the configuration is received, the image displayed in Home Assistant will also be updated.
 	/// </summary>
-	public class MqttCameraControlPanelDiscoveryConfig : MqttDiscoveryConfig
+	public class MqttCameraDiscoveryConfig : MqttDiscoveryConfig
 	{
 		public override string Component => "camera";
 
