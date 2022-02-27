@@ -33,7 +33,7 @@ public class MqttDiscoveryConfigParserTests
 
 		var result = _sut.Parse(topic, message);
 
-		Assert.IsType<MqttLightDiscoveryConfig>(result);
-		Assert.Equal(254, ((MqttLightDiscoveryConfig)result).BrightnessScale);
+		Assert.IsType<MqttJsonLightDiscoveryConfig>(result);
+		Assert.Equal(254, ((MqttJsonLightDiscoveryConfig)result).BrightnessScale);
 	}
 }

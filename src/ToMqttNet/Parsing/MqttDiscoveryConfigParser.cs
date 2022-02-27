@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 
 namespace ToMqttNet;
@@ -18,7 +19,6 @@ public class MqttDiscoveryConfigParser : IMqttDiscoveryConfigParser
 		{ "fan", typeof(MqttFanDiscoveryConfig) },
 		{ "humidifier", typeof(MqttHumidifierDiscoveryConfig) },
 		{ "climate", typeof(MqttClimateDiscoveryConfig) },
-		{ "light", typeof(MqttLightDiscoveryConfig) },
 		{ "lock", typeof(MqttLockDiscoveryConfig) },
 		{ "number", typeof(MqttNumberDiscoveryConfig) },
 		{ "scene", typeof(MqttSceneDiscoveryConfig) },
@@ -53,12 +53,36 @@ public class MqttDiscoveryConfigParser : IMqttDiscoveryConfigParser
 			return null;
 		}
 
+		if (componentType == "light")
+		{
+			return ParseLight(message);
+		}
+
 		if (_discoveryConfigMap.TryGetValue(componentType, out var discoveryConfigType))
 		{
 			return (MqttDiscoveryConfig?)JsonConvert.DeserializeObject(message, discoveryConfigType, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
 		}
 
 		_logger.LogWarning("Received document with unknown component {component}", componentType);
+		return null;
+	}
+
+	private MqttDiscoveryConfig? ParseLight(string message)
+	{
+		var jToken = JsonConvert.DeserializeObject<JToken>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+		var schema = jToken?.Value<string>("schema") ?? "default";
+
+		switch (schema)
+		{
+			case "default":
+				return JsonConvert.DeserializeObject<MqttDefaultLightDiscoveryConfig>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+			case "json":
+				return JsonConvert.DeserializeObject<MqttJsonLightDiscoveryConfig>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+			case "template":
+				return JsonConvert.DeserializeObject<MqttTemplateLightDiscoveryConfig>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+		}
+
+		_logger.LogWarning("Does not support light with schema {schema}", schema);
 		return null;
 	}
 }
