@@ -11,6 +11,7 @@ namespace ToMqttNet
 	public class MqttConnectionService : BackgroundService, IMqttConnectionService
 	{
 		private readonly ILogger<MqttConnectionService> _logger;
+		private string _instanceId = Guid.NewGuid().ToString();
 
 		public MqttConnectionOptions MqttOptions { get; }
 		private IManagedMqttClient? _mqttClient;
@@ -30,7 +31,7 @@ namespace ToMqttNet
 			var options = new ManagedMqttClientOptionsBuilder()
 				.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
 				.WithClientOptions(new MqttClientOptionsBuilder()
-					.WithClientId(MqttOptions.ClientId)
+					.WithClientId(MqttOptions.ClientId + "-" + _instanceId)
 					.WithTcpServer(MqttOptions.Server, MqttOptions.Port)
 					.WithWillMessage(
 						new MqttApplicationMessageBuilder()
