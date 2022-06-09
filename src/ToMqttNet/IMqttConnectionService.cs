@@ -5,7 +5,10 @@ namespace ToMqttNet
 {
 	public interface IMqttConnectionService
 	{
-		event EventHandler<MqttApplicationMessageReceivedEventArgs> OnApplicationMessageReceived;
+		public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
+		public event EventHandler<EventArgs>? OnConnect;
+		public event EventHandler<EventArgs>? OnDisconnect;
+
 		MqttConnectionOptions MqttOptions { get; }
 
 		Task PublishAsync(params MqttApplicationMessage[] applicationMessages);

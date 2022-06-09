@@ -16,7 +16,7 @@ namespace ToMqttNet
 		public MqttConnectionOptions MqttOptions { get; }
 		private IManagedMqttClient? _mqttClient;
 
-		public event EventHandler<MqttApplicationMessageReceivedEventArgs> OnApplicationMessageReceived = null!;
+		public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
 		public event EventHandler<EventArgs>? OnConnect;
 		public event EventHandler<EventArgs>? OnDisconnect;
 
