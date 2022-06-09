@@ -17,6 +17,8 @@ namespace ToMqttNet
 		private IManagedMqttClient? _mqttClient;
 
 		public event EventHandler<MqttApplicationMessageReceivedEventArgs> OnApplicationMessageReceived = null!;
+		public event EventHandler<EventArgs>? OnConnect;
+		public event EventHandler<EventArgs>? OnDisconnect;
 
 		public MqttConnectionService(
 			ILogger<MqttConnectionService> logger,
@@ -57,11 +59,14 @@ namespace ToMqttNet
 						.WithTopic($"{MqttOptions.NodeId}/connected")
 						.WithRetainFlag()
 						.Build());
+
+				OnConnect?.Invoke(this, new EventArgs());
 			});
 
 			_mqttClient.UseDisconnectedHandler((evnt) =>
 			{
 				_logger.LogInformation(evnt.Exception, "Disconnected from mqtt: {reason}", evnt.Reason);
+				OnDisconnect?.Invoke(this, new EventArgs());
 			});
 
 			_mqttClient.UseApplicationMessageReceivedHandler((evnt) =>
