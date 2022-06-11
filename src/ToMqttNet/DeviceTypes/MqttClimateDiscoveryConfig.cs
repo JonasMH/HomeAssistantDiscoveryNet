@@ -40,24 +40,6 @@ namespace ToMqttNet
 		public string? AuxStateTopic { get; set; }
 
 		///<summary>
-		/// The MQTT topic to publish commands to change the away mode.
-		///</summary> 
-		[JsonProperty("away_mode_command_topic")]
-		public string? AwayModeCommandTopic { get; set; }
-
-		///<summary>
-		/// A template to render the value received on the away_mode_state_topic with.
-		///</summary> 
-		[JsonProperty("away_mode_state_template")]
-		public string? AwayModeStateTemplate { get; set; }
-
-		///<summary>
-		/// The MQTT topic to subscribe for changes of the HVAC away mode. If this is not set, the away mode works in optimistic mode (see below).
-		///</summary> 
-		[JsonProperty("away_mode_state_topic")]
-		public string? AwayModeStateTopic { get; set; }
-
-		///<summary>
 		/// A template with which the value received on current_temperature_topic will be rendered.
 		///</summary> 
 		[JsonProperty("current_temperature_template")]
@@ -124,42 +106,11 @@ namespace ToMqttNet
 		public List<string>? FanModes { get; set; }
 
 		///<summary>
-		/// A template to render the value sent to the hold_command_topic with.
-		///</summary> 
-		[JsonProperty("hold_command_template")]
-		public string? HoldCommandTemplate { get; set; }
-
-		///<summary>
-		/// The MQTT topic to publish commands to change the hold mode.
-		///</summary> 
-		[JsonProperty("hold_command_topic")]
-		public string? HoldCommandTopic { get; set; }
-
-		///<summary>
-		/// A template to render the value received on the hold_state_topic with.
-		///</summary> 
-		[JsonProperty("hold_state_template")]
-		public string? HoldStateTemplate { get; set; }
-
-		///<summary>
-		/// The MQTT topic to subscribe for changes of the HVAC hold mode. If this is not set, the hold mode works in optimistic mode (see below).
-		///</summary> 
-		[JsonProperty("hold_state_topic")]
-		public string? HoldStateTopic { get; set; }
-
-		///<summary>
-		/// A list of available hold modes.
-		///</summary> 
-		[JsonProperty("hold_modes")]
-		public List<string>? HoldModes { get; set; }
-
-		///<summary>
 		/// Set the initial target temperature.
 		/// , default: 21
 		///</summary> 
 		[JsonProperty("initial")]
 		public long? Initial { get; set; }
-
 
 		///<summary>
 		/// Defines a template to extract the JSON dictionary from messages received on the json_attributes_topic. Usage example can be found in MQTT sensor documentation.
@@ -268,6 +219,37 @@ namespace ToMqttNet
 		public double? Precision { get; set; }
 
 		///<summary>
+		/// Defines a template to generate the payload to send to preset_mode_command_topic.
+		///</summary> 
+		[JsonProperty("preset_mode_command_template")]
+		public string? PresetModeCommandTemplate { get; set; }
+
+		///<summary>
+		/// The MQTT topic to publish commands to change the preset mode.
+		///</summary> 
+		[JsonProperty("preset_mode_command_topic")]
+		public string? PresetModeCommandTopic { get; set; }
+
+		///<summary>
+		/// The MQTT topic subscribed to receive climate speed based on presets. When preset ‘none’ is received or None the preset_mode will be reset.
+		///</summary> 
+		[JsonProperty("preset_mode_state_topic")]
+		public string? PresetModeStateTopic { get; set; }
+
+		///<summary>
+		/// Defines a template to extract the preset_mode value from the payload received on preset_mode_state_topic.
+		///</summary> 
+		[JsonProperty("preset_mode_value_template")]
+		public string? PresetModeValueTemplate { get; set; }
+
+		///<summary>
+		/// List of preset modes this climate is supporting. Common examples include eco, away, boost, comfort, home, sleep and activity.
+		/// , default: []
+		///</summary> 
+		[JsonProperty("preset_modes")]
+		public List<string>? PresetModes { get; set; }
+
+		///<summary>
 		/// The maximum QoS level to be used when receiving and publishing messages.
 		/// , default: 0
 		///</summary> 
@@ -280,13 +262,6 @@ namespace ToMqttNet
 		///</summary> 
 		[JsonProperty("retain")]
 		public bool? Retain { get; set; }
-
-		///<summary>
-		/// Set to false to suppress sending of all MQTT messages when the current mode is Off.
-		/// , default: true
-		///</summary> 
-		[JsonProperty("send_if_off")]
-		public bool? SendIfOff { get; set; }
 
 		///<summary>
 		/// A template to render the value sent to the swing_mode_command_topic with.
