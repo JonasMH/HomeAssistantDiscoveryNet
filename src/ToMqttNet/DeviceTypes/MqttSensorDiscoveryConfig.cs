@@ -71,6 +71,12 @@ namespace ToMqttNet
 		public string? LastResetValueTemplate { get; set; }
 
 		///<summary>
+		/// Last rest
+		///</summary> 
+		[JsonProperty("last_reset")]
+		public string? LastReset { get; set; }
+
+		///<summary>
 		/// Used instead of name for automatic generation of entity_id
 		///</summary> 
 		[JsonProperty("object_id")]
