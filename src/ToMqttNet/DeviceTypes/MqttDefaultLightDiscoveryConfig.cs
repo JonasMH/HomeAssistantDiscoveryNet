@@ -205,14 +205,14 @@ namespace ToMqttNet
 		/// , default: OFF
 		///</summary> 
 		[JsonProperty("payload_off")]
-		public string? PayloadOff { get; set; }
+		public object? PayloadOff { get; set; }
 
 		///<summary>
 		/// The payload that represents enabled state.
 		/// , default: ON
 		///</summary> 
 		[JsonProperty("payload_on")]
-		public string? PayloadOn { get; set; }
+		public object? PayloadOn { get; set; }
 
 		///<summary>
 		/// The maximum QoS level of the state topic.
@@ -254,10 +254,9 @@ namespace ToMqttNet
 
 		///<summary>
 		/// The schema to use. Must be default or omitted to select the default schema.
-		/// , default: default
 		///</summary> 
 		[JsonProperty("schema")]
-		public string? Schema { get; set; }
+		public string? Schema { get; } = "basic";
 
 		///<summary>
 		/// The MQTT topic subscribed to receive state updates.

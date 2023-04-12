@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Client.Options;
 using MQTTnet.Extensions.ManagedClient;
+using MQTTnet.Packets;
 
 namespace ToMqttNet
 {
@@ -30,30 +30,35 @@ namespace ToMqttNet
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
-			var options = new ManagedMqttClientOptionsBuilder()
-				.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-				.WithClientOptions(new MqttClientOptionsBuilder()
+			var clientOptionsBuilder = new MqttClientOptionsBuilder()
 					.WithClientId(MqttOptions.ClientId + "-" + _instanceId)
-					.WithTcpServer(MqttOptions.Server, MqttOptions.Port)
-					.WithWillMessage(
-						new MqttApplicationMessageBuilder()
-							.WithPayload("0")
-							.WithTopic($"{MqttOptions.NodeId}/connected")
-							.WithRetainFlag()
-							.Build()
-					)
-					.Build()
-				)
-				.Build();
+					.WithWillPayload("0")
+					.WithWillTopic($"{MqttOptions.NodeId}/connected")
+					.WithWillRetain();
+
+			if(!string.IsNullOrWhiteSpace(MqttOptions.BrokerUrl)) {
+				clientOptionsBuilder = clientOptionsBuilder.WithConnectionUri(MqttOptions.BrokerUrl);
+			} else {
+				clientOptionsBuilder = clientOptionsBuilder.WithTcpServer(MqttOptions.Server, MqttOptions.Port);
+			}
+
+			var clientOptions = clientOptionsBuilder;
+
+
+			var optionsBuilder = new ManagedMqttClientOptionsBuilder()
+				.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
+				.WithClientOptions(clientOptions);
+
+			var options = optionsBuilder.Build();
 
 			_mqttClient = new MqttFactory()
 				.CreateManagedMqttClient();
 
-			_mqttClient.UseConnectedHandler(async (evnt) =>
+			_mqttClient.ConnectedAsync += async (evnt) =>
 			{
 				_logger.LogInformation("Connected to mqtt: {reason}", evnt.ConnectResult.ReasonString);
 
-				await _mqttClient.PublishAsync(
+				await _mqttClient.EnqueueAsync(
 					new MqttApplicationMessageBuilder()
 						.WithPayload("2")
 						.WithTopic($"{MqttOptions.NodeId}/connected")
@@ -61,26 +66,26 @@ namespace ToMqttNet
 						.Build());
 
 				OnConnect?.Invoke(this, new EventArgs());
-			});
+			};
 
-			_mqttClient.UseDisconnectedHandler((evnt) =>
+			_mqttClient.DisconnectedAsync += async (evnt) =>
 			{
 				_logger.LogInformation(evnt.Exception, "Disconnected from mqtt: {reason}", evnt.Reason);
 				OnDisconnect?.Invoke(this, new EventArgs());
-			});
+			};
 
-			_mqttClient.UseApplicationMessageReceivedHandler((evnt) =>
+			_mqttClient.ApplicationMessageReceivedAsync += async (evnt) =>
 			{
 				_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
 				OnApplicationMessageReceived?.Invoke(this, evnt);
-			});
+			};
 
 			await _mqttClient.StartAsync(options);
 		}
 
-		public Task PublishAsync(params MqttApplicationMessage[] applicationMessages)
+		public Task PublishAsync(MqttApplicationMessage applicationMessages)
 		{
-			return _mqttClient!.PublishAsync(applicationMessages);
+			return _mqttClient!.EnqueueAsync(applicationMessages);
 		}
 
 		public Task SubscribeAsync(params MqttTopicFilter[] topics)
