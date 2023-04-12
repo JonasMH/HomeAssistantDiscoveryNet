@@ -154,10 +154,9 @@ namespace ToMqttNet
 
 		///<summary>
 		/// The schema to use. Must be template to select the template schema.
-		/// , default: default
 		///</summary> 
 		[JsonProperty("schema")]
-		public string? Schema { get; set; }
+		public string? Schema { get; } = "template";
 
 		///<summary>
 		/// Template to extract state from the state payload value.

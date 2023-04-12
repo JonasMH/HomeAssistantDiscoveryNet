@@ -1,5 +1,6 @@
 ﻿using MQTTnet;
-using Newtonsoft.Json;
+using MQTTnet.Client;
+using MQTTnet.Packets;
 
 namespace ToMqttNet
 {
@@ -11,7 +12,7 @@ namespace ToMqttNet
 
 		MqttConnectionOptions MqttOptions { get; }
 
-		Task PublishAsync(params MqttApplicationMessage[] applicationMessages);
+		Task PublishAsync(MqttApplicationMessage applicationMessages);
 		Task SubscribeAsync(params MqttTopicFilter[] topics);
 		Task UnsubscribeAsync(params string[] topics);
 	}

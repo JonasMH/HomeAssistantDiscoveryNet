@@ -155,10 +155,9 @@ namespace ToMqttNet
 
 		///<summary>
 		/// The schema to use. Must be json to select the JSON schema.
-		/// , default: default
 		///</summary> 
 		[JsonProperty("schema")]
-		public string? Schema { get; set; }
+		public string? Schema { get; } = "json";
 
 		///<summary>
 		/// The MQTT topic subscribed to receive state updates.
