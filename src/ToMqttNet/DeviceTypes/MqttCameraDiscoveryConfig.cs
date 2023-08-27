@@ -47,11 +47,5 @@ namespace ToMqttNet
 		///</summary> 
 		[JsonProperty("topic")]
 		public string Topic { get; set; }
-
-		///<summary>
-		/// An ID that uniquely identifies this camera. If two cameras have the same unique ID Home Assistant will raise an exception.
-		///</summary> 
-		[JsonProperty("unique_id")]
-		public string? UniqueId { get; set; }
 	}
 }
