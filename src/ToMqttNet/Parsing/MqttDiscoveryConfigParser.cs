@@ -27,6 +27,7 @@ public class MqttDiscoveryConfigParser : IMqttDiscoveryConfigParser
 		{ "switch", typeof(MqttSwitchDiscoveryConfig) },
 		{ "tag", typeof(MqttTagScannerDiscoveryConfig) },
 		{ "vacuum", typeof(MqttVacuumDiscoveryConfig) },
+		{ "event", typeof(MqttEventDiscoveryConfig) },
 	});
 
 	private readonly ILogger<MqttDiscoveryConfigParser> _logger;
