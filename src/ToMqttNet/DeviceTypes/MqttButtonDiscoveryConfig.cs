@@ -2,10 +2,10 @@
 
 namespace ToMqttNet
 {
-	/// <summary>
-	/// The mqtt button platform lets you send an MQTT message when the button is pressed in the frontend or the button press service is called. This can be used to expose some service of a remote device, for example reboot.
-	/// </summary>
-	public class MqttButtonDiscoveryConfig : MqttDiscoveryConfig
+    /// <summary>
+    /// The mqtt button platform lets you send an MQTT message when the button is pressed in the frontend or the button press service is called. This can be used to expose some service of a remote device, for example reboot.
+    /// </summary>
+    public class MqttButtonDiscoveryConfig : MqttDiscoveryConfig
 	{
 		public override string Component => "button";
 
