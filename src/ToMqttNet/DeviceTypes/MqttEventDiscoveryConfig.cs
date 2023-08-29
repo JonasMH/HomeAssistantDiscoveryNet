@@ -11,7 +11,7 @@ namespace ToMqttNet
         /// , default: None
         ///</summary> 
         [JsonProperty("device_class")]
-        public HomeAssistantDeviceClass? DeviceClass { get; set; }
+        public string? DeviceClass { get; set; }
 
         ///<summary>
         /// Flag which defines if the entity should be enabled when first added.
