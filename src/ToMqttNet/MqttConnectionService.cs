@@ -4,7 +4,9 @@ using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
+using MQTTnet.Implementations;
 using MQTTnet.Packets;
+using System.Text;
 
 namespace ToMqttNet
 {
@@ -30,26 +32,28 @@ namespace ToMqttNet
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
-			var clientOptionsBuilder = new MqttClientOptionsBuilder()
-					.WithClientId(MqttOptions.ClientId + "-" + _instanceId)
-					.WithWillPayload("0")
-					.WithWillTopic($"{MqttOptions.NodeId}/connected")
-					.WithWillRetain();
+			var options = MqttOptions.ClientOptions;
 
-			if(!string.IsNullOrWhiteSpace(MqttOptions.BrokerUrl)) {
-				clientOptionsBuilder = clientOptionsBuilder.WithConnectionUri(MqttOptions.BrokerUrl);
-			} else {
-				clientOptionsBuilder = clientOptionsBuilder.WithTcpServer(MqttOptions.Server, MqttOptions.Port);
+			if(string.IsNullOrEmpty(options.ClientId))
+            {
+                options.ClientId = MqttOptions.NodeId + "-" + _instanceId;
+            }
+
+			options.WillPayload = Encoding.UTF8.GetBytes("0");
+			options.WillTopic = $"{MqttOptions.NodeId}/connected";
+			options.WillRetain = true;
+
+			if(options.ChannelOptions == null) {
+				options.ChannelOptions = new MqttClientTcpOptions
+                {
+                    Server = "mosquitto",
+					Port = 1883
+                };
 			}
-
-			var clientOptions = clientOptionsBuilder;
-
 
 			var optionsBuilder = new ManagedMqttClientOptionsBuilder()
 				.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-				.WithClientOptions(clientOptions);
-
-			var options = optionsBuilder.Build();
+				.WithClientOptions(options);
 
 			_mqttClient = new MqttFactory()
 				.CreateManagedMqttClient();
@@ -80,7 +84,7 @@ namespace ToMqttNet
 				OnApplicationMessageReceived?.Invoke(this, evnt);
 			};
 
-			await _mqttClient.StartAsync(options);
+			await _mqttClient.StartAsync(optionsBuilder.Build());
 		}
 
 		public Task PublishAsync(MqttApplicationMessage applicationMessages)
