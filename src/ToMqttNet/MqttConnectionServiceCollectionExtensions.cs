@@ -11,7 +11,6 @@ namespace ToMqttNet
 			services.AddHostedService(x => x.GetRequiredService<MqttConnectionService>());
 			services.AddOptions<MqttConnectionOptions>()
 				.Configure(configureOptions)
-				.BindConfiguration(nameof(MqttConnectionOptions))
 				.ValidateDataAnnotations();
 
 			return services;
