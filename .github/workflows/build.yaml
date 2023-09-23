@@ -1,16 +1,20 @@
 name: .NET Core
 on:
   push:
+    branches:
+      - "main"
+      - "develop"
   pull_request:
+    branches:
+      - "*"
   release:
     types:
       - published
 env:
-  # Stop wasting time caching packages
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # Disable sending usage data to Microsoft
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  # Project name to pack and publish
+
   PROJECT_NAME: ToMqttNet
   # GitHub Packages Feed settings
   GITHUB_FEED: https://nuget.pkg.github.com/JonasMH/
@@ -19,31 +23,28 @@ env:
   # Official NuGet Feed settings
   NUGET_FEED: https://api.nuget.org/v3/index.json
   NUGET_KEY: ${{ secrets.NUGET_KEY }}
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.x
+          dotnet-version: 8.x
+          cache: true
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore --locked-mode
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
         run: dotnet test -c Release
       - name: Pack
-        if: matrix.os == 'ubuntu-latest'
         run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source src/$PROJECT_NAME/$PROJECT_NAME.*proj
       - name: Upload Artifact
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nupkg
           path: ./src/${{ env.PROJECT_NAME }}/bin/Release/*.nupkg
@@ -67,11 +68,12 @@ jobs:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.x
+          dotnet-version: 8.x
+          cache: true
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
