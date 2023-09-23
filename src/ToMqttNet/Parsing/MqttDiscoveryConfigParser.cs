@@ -80,7 +80,7 @@ public class MqttDiscoveryConfigParser : IMqttDiscoveryConfigParser
 
 	private MqttDiscoveryConfig? ParseLight(string message, JsonSerializerContext jsonContext)
 	{
-		var jToken = JsonSerializer.Deserialize<JsonObject>(message);
+		var jToken = JsonSerializer.Deserialize(message, MqttDiscoveryJsonContext.Default.JsonObject);
 		var schema = "default";
 
         if (jToken != null && jToken.TryGetPropertyValue("schema", out var val))

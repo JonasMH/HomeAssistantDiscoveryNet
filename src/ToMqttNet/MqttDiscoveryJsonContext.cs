@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ToMqttNet;
 
@@ -24,6 +25,7 @@ namespace ToMqttNet;
 [JsonSerializable(typeof(MqttTagScannerDiscoveryConfig))]
 [JsonSerializable(typeof(MqttTemplateLightDiscoveryConfig))]
 [JsonSerializable(typeof(MqttVacuumDiscoveryConfig))]
+[JsonSerializable(typeof(JsonObject))]
 [JsonSourceGenerationOptions(
 	WriteIndented = true,
 	PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
