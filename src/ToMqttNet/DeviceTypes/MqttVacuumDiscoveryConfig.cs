@@ -26,7 +26,7 @@ public class MqttVacuumDiscoveryConfig : MqttDiscoveryConfig
 	/// List of possible fan speeds for the vacuum.
 	///</summary> 
 	[JsonPropertyName("fan_speed_list")]
-	public List<string> FanSpeedList { get; set; }
+	public List<string> FanSpeedList { get; set; } = null!;
 
 	///<summary>
 	/// Defines a template to extract the JSON dictionary from messages received on the json_attributes_topic. Usage example can be found in MQTT sensor documentation.
@@ -148,5 +148,5 @@ public class MqttVacuumDiscoveryConfig : MqttDiscoveryConfig
 	///start, stop, return_home, status, battery, clean_spot
 	///</summary> 
 	[JsonPropertyName("supported_features")]
-	public List<string> SupportedFeatures { get; set; }
+	public List<string> SupportedFeatures { get; set; } = null!;
 }

@@ -19,7 +19,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to publish commands to change the fan state.
 	///</summary> 
 	[JsonPropertyName("command_topic")]
-	public string CommandTopic { get; set; }
+	public string CommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// Flag which defines if the entity should be enabled when first added.

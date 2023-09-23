@@ -46,5 +46,5 @@ public class MqttCameraDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to subscribe to.
 	///</summary> 
 	[JsonPropertyName("topic")]
-	public string Topic { get; set; }
+	public string Topic { get; set; } = null!;
 }

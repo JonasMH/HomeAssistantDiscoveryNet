@@ -8,6 +8,5 @@ public class MqttConnectionOptions
 	[Required]
 	public string NodeId { get; set; } = null!;
 
-
-        public MqttClientOptions ClientOptions { get; set; } = new MqttClientOptions { };
+	public MqttClientOptions ClientOptions { get; set; } = new MqttClientOptions { };
 }

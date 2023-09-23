@@ -113,7 +113,7 @@ public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic subscribed to receive sensor values.
 	///</summary> 
 	[JsonPropertyName("state_topic")]
-	public string StateTopic { get; set; }
+	public string StateTopic { get; set; } = null!;
 
 	///<summary>
 	/// Defines the units of measurement of the sensor, if any.

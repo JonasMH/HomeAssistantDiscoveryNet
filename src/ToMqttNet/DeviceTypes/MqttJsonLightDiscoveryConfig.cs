@@ -36,7 +36,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to publish commands to change the light’s state.
 	///</summary> 
 	[JsonPropertyName("command_topic")]
-	public string CommandTopic { get; set; }
+	public string CommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// Flag which defines if the entity should be enabled when first added.
