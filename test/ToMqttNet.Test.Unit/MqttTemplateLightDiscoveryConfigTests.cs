@@ -2,24 +2,23 @@
 using Newtonsoft.Json;
 using Xunit;
 
-namespace ToMqttNet.Test.Unit
+namespace ToMqttNet.Test.Unit;
+
+public class MqttTemplateLightDiscoveryConfigTests
 {
-	public class MqttTemplateLightDiscoveryConfigTests
+	[Fact]
+	public void ToJson_SchemaIsBasic()
 	{
-		[Fact]
-		public void ToJson_SchemaIsBasic()
+		// Arrange
+		var sut = new MqttTemplateLightDiscoveryConfig()
 		{
-			// Arrange
-			var sut = new MqttTemplateLightDiscoveryConfig()
-			{
 
-			};
+		};
 
-			// Act
-			var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
+		// Act
+		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
 
-			// Assert
-			Assert.Equal("template", result["schema"]!.ToString());
-		}
+		// Assert
+		Assert.Equal("template", result["schema"]!.ToString());
 	}
 }

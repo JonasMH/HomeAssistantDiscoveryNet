@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ToMqttNet;
 
@@ -44,8 +45,10 @@ public class MqttDiscoveryConfigParser : IMqttDiscoveryConfigParser
 			.ToDictionary(x => x.Key, x => x.Value);
 	}
 
-	public MqttDiscoveryConfig? Parse(string topic, string message)
+	public MqttDiscoveryConfig? Parse(string topic, string message, JsonSerializerContext? jsonContext = null)
 	{
+		jsonContext ??= MqttDiscoveryJsonContext.Default;
+
 		var componentType = topic.Split("/")[1];
 
 		if (componentType == null)
@@ -56,31 +59,43 @@ public class MqttDiscoveryConfigParser : IMqttDiscoveryConfigParser
 
 		if (componentType == "light")
 		{
-			return ParseLight(message);
+			return ParseLight(message, jsonContext);
 		}
 
 		if (_discoveryConfigMap.TryGetValue(componentType, out var discoveryConfigType))
 		{
-			return (MqttDiscoveryConfig?)JsonConvert.DeserializeObject(message, discoveryConfigType, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+			var jsonTypeInfo = jsonContext.GetTypeInfo(discoveryConfigType);
+
+			if(jsonTypeInfo == null)
+			{
+				throw new InvalidOperationException("The JsonTypeInfo for " + discoveryConfigType.FullName + " was not found in the provided JsonSerializerContext. If you have a custom Discovery Document you might need to provide your own JsonSerializerContext");
+			}
+
+			return (MqttDiscoveryConfig?)JsonSerializer.Deserialize(message, jsonTypeInfo);
 		}
 
 		_logger.LogWarning("Received document with unknown component {component}", componentType);
 		return null;
 	}
 
-	private MqttDiscoveryConfig? ParseLight(string message)
+	private MqttDiscoveryConfig? ParseLight(string message, JsonSerializerContext jsonContext)
 	{
-		var jToken = JsonConvert.DeserializeObject<JToken>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
-		var schema = jToken?.Value<string>("schema") ?? "default";
+		var jToken = JsonSerializer.Deserialize<JsonObject>(message);
+		var schema = "default";
 
-		switch (schema)
+        if (jToken != null && jToken.TryGetPropertyValue("schema", out var val))
+        {
+			schema = val?.GetValue<string>() ?? "default";
+        }
+
+        switch (schema)
 		{
 			case "default":
-				return JsonConvert.DeserializeObject<MqttDefaultLightDiscoveryConfig>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+				return (MqttDiscoveryConfig?)JsonSerializer.Deserialize(message, jsonContext.Options.GetTypeInfo(typeof(MqttDefaultLightDiscoveryConfig)));
 			case "json":
-				return JsonConvert.DeserializeObject<MqttJsonLightDiscoveryConfig>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+				return (MqttDiscoveryConfig?)JsonSerializer.Deserialize(message, jsonContext.Options.GetTypeInfo(typeof(MqttJsonLightDiscoveryConfig)));
 			case "template":
-				return JsonConvert.DeserializeObject<MqttTemplateLightDiscoveryConfig>(message, MqttDiscoveryConfigExtensions.DiscoveryJsonSettings);
+				return (MqttDiscoveryConfig?)JsonSerializer.Deserialize(message, jsonContext.Options.GetTypeInfo(typeof(MqttTemplateLightDiscoveryConfig)));
 		}
 
 		_logger.LogWarning("Does not support light with schema {schema}", schema);
