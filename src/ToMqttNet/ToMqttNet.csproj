@@ -1,26 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PublishAot>true</PublishAot>
+
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
 		<Version>0.1.4</Version>
 		<Authors>JonasMH</Authors>
 		<PackageDescription>ASP.NET Hosted MQTT Connection and models to make it easier to work with Home Assistant MQTT Discovery</PackageDescription>
 		<RepositoryUrl>https://github.com/JonasMH/ToMqttNet</RepositoryUrl>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
 		<NoWarn>$(NoWarn);1591</NoWarn>
-  </PropertyGroup>
+	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="MQTTnet" Version="4.1.4.563" />
-		<PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.1.4.563" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0-rc.1.23419.4" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0-rc.1.23419.4" />
+		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0-rc.1.23419.4" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0-rc.1.23419.4" />
+		<PackageReference Include="MQTTnet" Version="4.3.1.873" />
+		<PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.1.873" />
 	</ItemGroup>
 </Project>

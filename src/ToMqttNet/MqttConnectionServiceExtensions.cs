@@ -1,36 +1,35 @@
 ﻿using MQTTnet;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace ToMqttNet
+namespace ToMqttNet;
+
+
+public static class MqttDiscoveryConfigExtensions
 {
-	public static class MqttDiscoveryConfigExtensions
+	public static string ToJson<T>(this T config, JsonSerializerContext? ctx = null) where T : MqttDiscoveryConfig
 	{
-		public static JsonSerializerSettings DiscoveryJsonSettings { get; } = new JsonSerializerSettings
-		{
-			ContractResolver = new DefaultContractResolver
-			{
-				NamingStrategy = new CamelCaseNamingStrategy(),
-			},
-			Formatting = Formatting.None,
-			NullValueHandling = NullValueHandling.Ignore,
-		};
-		public static string ToJson<T>(this T config) where T : MqttDiscoveryConfig
-		{
-			return JsonConvert.SerializeObject(config, DiscoveryJsonSettings);
-		}
-	}
+		ctx = ctx ?? MqttDiscoveryJsonContext.Default;
+		var jsonTypeInfo = ctx.GetTypeInfo(typeof(T));
 
-	public static class MqttConnectionServiceExtensions
-	{
-		public static Task PublishDiscoveryDocument<T>(this IMqttConnectionService connection, T config) where T : MqttDiscoveryConfig
+		if (jsonTypeInfo == null)
 		{
-			return connection.PublishAsync(
-				new MqttApplicationMessageBuilder()
-					.WithTopic($"homeassistant/{config.Component}/{connection.MqttOptions.NodeId}/{config.UniqueId}/config")
-					.WithRetainFlag()
-					.WithPayload(config.ToJson())
-					.Build());
+			throw new InvalidOperationException("The JsonTypeInfo for " + config.GetType().FullName + " was not found in the provided JsonSerializerContext. If you have a custom Discovery Document you might need to provide your own JsonSerializerContext");
 		}
+
+		return JsonSerializer.Serialize(config, jsonTypeInfo);
+	}
+}
+
+public static class MqttConnectionServiceExtensions
+{
+	public static Task PublishDiscoveryDocument<T>(this IMqttConnectionService connection, T config, JsonSerializerContext? ctx = null) where T : MqttDiscoveryConfig
+	{
+		return connection.PublishAsync(
+			new MqttApplicationMessageBuilder()
+				.WithTopic($"homeassistant/{config.Component}/{connection.MqttOptions.NodeId}/{config.UniqueId}/config")
+				.WithRetainFlag()
+				.WithPayload(config.ToJson(ctx))
+				.Build());
 	}
 }

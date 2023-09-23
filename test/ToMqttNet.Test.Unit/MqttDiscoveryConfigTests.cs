@@ -11,7 +11,7 @@ public class MqttDiscoveryConfigTests
 	public void ToJson_CorrectTopic()
 	{
 		// Arrange
-		var sut = new MqttStubDiscoveryConfig()
+		var sut = new MqttEventDiscoveryConfig()
 		{
 			
 		};
@@ -20,14 +20,14 @@ public class MqttDiscoveryConfigTests
 		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
 
 		// Assert
-		Assert.Equal("stub", result["component"]!.ToString());
+		Assert.Equal("event", result["component"]!.ToString());
 	}
 
 	[Fact]
 	public void ToJson_ShouldIgnoreNull()
 	{
 		// Arrange
-		var sut = new MqttStubDiscoveryConfig()
+		var sut = new MqttEventDiscoveryConfig()
 		{
 			
 		};
@@ -43,7 +43,7 @@ public class MqttDiscoveryConfigTests
 	public void ToJson_Availability_IsStringBased()
 	{
 		// Arrange
-		var sut = new MqttStubDiscoveryConfig()
+		var sut = new MqttEventDiscoveryConfig()
 		{
 			AvailabilityMode = MqttDiscoveryAvailabilityMode.Any
 		};
@@ -59,7 +59,7 @@ public class MqttDiscoveryConfigTests
 	public void ToJson_DeviceConnections_ShouldBeAListOfLists()
 	{
 		// Arrange
-		var sut = new MqttStubDiscoveryConfig()
+		var sut = new MqttEventDiscoveryConfig()
 		{
 			Device = new MqttDiscoveryDevice
 			{
@@ -85,10 +85,4 @@ public class MqttDiscoveryConfigTests
 		Assert.Equal("ip", con1Array[0]);
 		Assert.Equal("192.168.0.1", con1Array[1]);
 	}
-}
-
-
-public class MqttStubDiscoveryConfig : MqttDiscoveryConfig
-{
-	public override string Component => "stub";
 }

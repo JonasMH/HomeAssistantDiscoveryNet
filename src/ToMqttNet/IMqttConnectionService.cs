@@ -2,18 +2,17 @@
 using MQTTnet.Client;
 using MQTTnet.Packets;
 
-namespace ToMqttNet
+namespace ToMqttNet;
+
+public interface IMqttConnectionService
 {
-	public interface IMqttConnectionService
-	{
-		public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
-		public event EventHandler<EventArgs>? OnConnect;
-		public event EventHandler<EventArgs>? OnDisconnect;
+	public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
+	public event EventHandler<EventArgs>? OnConnect;
+	public event EventHandler<EventArgs>? OnDisconnect;
 
-		MqttConnectionOptions MqttOptions { get; }
+	MqttConnectionOptions MqttOptions { get; }
 
-		Task PublishAsync(MqttApplicationMessage applicationMessages);
-		Task SubscribeAsync(params MqttTopicFilter[] topics);
-		Task UnsubscribeAsync(params string[] topics);
-	}
+	Task PublishAsync(MqttApplicationMessage applicationMessages);
+	Task SubscribeAsync(params MqttTopicFilter[] topics);
+	Task UnsubscribeAsync(params string[] topics);
 }
