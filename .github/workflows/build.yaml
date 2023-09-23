@@ -35,6 +35,7 @@ jobs:
         with:
           dotnet-version: 8.x
           cache: true
+          cache-dependency-path: src/ToMqttNet/packages.lock.json
       - name: Restore
         run: dotnet restore --locked-mode
       - name: Build
@@ -74,6 +75,7 @@ jobs:
         with:
           dotnet-version: 8.x
           cache: true
+          cache-dependency-path: src/ToMqttNet/packages.lock.json
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
