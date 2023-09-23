@@ -19,7 +19,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to publish commands to change the humidifier state.
 	///</summary> 
 	[JsonPropertyName("command_topic")]
-	public string CommandTopic { get; set; }
+	public string CommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// The device class of the MQTT device. Must be either humidifier or dehumidifier.
@@ -142,7 +142,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to publish commands to change the humidifier target humidity state based on a percentage.
 	///</summary> 
 	[JsonPropertyName("target_humidity_command_topic")]
-	public string TargetHumidityCommandTopic { get; set; }
+	public string TargetHumidityCommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// The MQTT topic subscribed to receive humidifier target humidity.

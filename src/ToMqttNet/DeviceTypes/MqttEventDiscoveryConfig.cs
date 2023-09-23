@@ -38,13 +38,13 @@ namespace ToMqttNet;
         /// A list of valid event_type strings.
         ///</summary> 
         [JsonPropertyName("event_types")]
-        public List<string> EventTypes { get; set; }
+        public List<string> EventTypes { get; set; } = null!;
 
 
-        ///<summary>
-        /// Defines a template to extract the JSON dictionary from messages received on the json_attributes_topic. Usage example can be found in MQTT sensor documentation.
-        ///</summary> 
-        [JsonPropertyName("json_attributes_template")]
+	///<summary>
+	/// Defines a template to extract the JSON dictionary from messages received on the json_attributes_topic. Usage example can be found in MQTT sensor documentation.
+	///</summary> 
+	[JsonPropertyName("json_attributes_template")]
         public string? JsonAttributesTemplate { get; set; }
 
         ///<summary>
@@ -80,12 +80,12 @@ namespace ToMqttNet;
         [JsonPropertyName("qos")]
         public long? Qos { get; set; }
 
-        ///<summary>
-        /// The MQTT topic subscribed to receive JSON event payloads. The JSON payload should contain the event_type element. The event type should be one of the configured event_types.
-        /// , default: None
-        ///</summary> 
-        [JsonPropertyName("state_topic")]
-        public string StateTopic { get; set; }
+    ///<summary>
+    /// The MQTT topic subscribed to receive JSON event payloads. The JSON payload should contain the event_type element. The event type should be one of the configured event_types.
+    /// , default: None
+    ///</summary> 
+    [JsonPropertyName("state_topic")]
+    public string StateTopic { get; set; } = null!;
 
         ///<summary>
         /// Defines a template to extract the value and render it to a valid JSON event payload. If the template throws an error, the current state will be used instead.

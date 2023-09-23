@@ -48,7 +48,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to publish commands to change the alarm state.
 	///</summary> 
 	[JsonPropertyName("command_topic")]
-	public string CommandTopic { get; set; }
+	public string CommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// Flag which defines if the entity should be enabled when first added.
@@ -170,7 +170,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic subscribed to receive state updates.
 	///</summary> 
 	[JsonPropertyName("state_topic")]
-	public string StateTopic { get; set; }
+	public string StateTopic { get; set; } = null!;
 
 	///<summary>
 	/// Defines a template to extract the value.

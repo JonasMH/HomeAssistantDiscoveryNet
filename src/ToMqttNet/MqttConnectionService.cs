@@ -71,16 +71,18 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 			OnConnect?.Invoke(this, new EventArgs());
 		};
 
-		_mqttClient.DisconnectedAsync += async (evnt) =>
+		_mqttClient.DisconnectedAsync += (evnt) =>
 		{
 			_logger.LogInformation(evnt.Exception, "Disconnected from mqtt: {reason}", evnt.Reason);
 			OnDisconnect?.Invoke(this, new EventArgs());
+			return Task.CompletedTask;
 		};
 
-		_mqttClient.ApplicationMessageReceivedAsync += async (evnt) =>
+		_mqttClient.ApplicationMessageReceivedAsync += (evnt) =>
 		{
 			_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
 			OnApplicationMessageReceived?.Invoke(this, evnt);
+			return Task.CompletedTask;
 		};
 
 		await _mqttClient.StartAsync(optionsBuilder.Build());

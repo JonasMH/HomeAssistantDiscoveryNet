@@ -72,7 +72,7 @@ public class MqttDeviceTrackerDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic subscribed to receive device tracker state changes.
 	///</summary> 
 	[JsonPropertyName("state_topic")]
-	public string StateTopic { get; set; }
+	public string StateTopic { get; set; } = null!;
 
 	///<summary>
 	/// Defines a template that returns a device tracker state.

@@ -19,7 +19,7 @@ public class MqttSelectDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic to publish commands to change the selected option.
 	///</summary> 
 	[JsonPropertyName("command_topic")]
-	public string CommandTopic { get; set; }
+	public string CommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// Flag which defines if the entity should be enabled when first added.
@@ -73,7 +73,7 @@ public class MqttSelectDiscoveryConfig : MqttDiscoveryConfig
 	/// List of options that can be selected. An empty list or a list with a single item is allowed.
 	///</summary> 
 	[JsonPropertyName("options")]
-	public List<string> Options { get; set; }
+	public List<string> Options { get; set; } = null!;
 
 	///<summary>
 	/// The maximum QoS level of the state topic. Default is 0 and will also be used to publishing messages.

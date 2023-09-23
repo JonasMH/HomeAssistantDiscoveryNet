@@ -33,19 +33,19 @@ public class MqttTemplateLightDiscoveryConfig : MqttDiscoveryConfig
 	/// The template for off state changes. Available variables: state and transition.
 	///</summary> 
 	[JsonPropertyName("command_off_template")]
-	public string CommandOffTemplate { get; set; }
+	public string CommandOffTemplate { get; set; } = null!;
 
 	///<summary>
 	/// The template for on state changes. Available variables: state, brightness, color_temp, red, green, blue, flash, transition and effect. Values red, green, blue, brightness are provided as integers from range 0-255. Value of color_temp is provided as integer representing mired units.
 	///</summary> 
 	[JsonPropertyName("command_on_template")]
-	public string CommandOnTemplate { get; set; }
+	public string CommandOnTemplate { get; set; } = null!;
 
 	///<summary>
 	/// The MQTT topic to publish commands to change the light’s state.
 	///</summary> 
 	[JsonPropertyName("command_topic")]
-	public string CommandTopic { get; set; }
+	public string CommandTopic { get; set; } = null!;
 
 	///<summary>
 	/// Flag which defines if the entity should be enabled when first added.
@@ -72,7 +72,7 @@ public class MqttTemplateLightDiscoveryConfig : MqttDiscoveryConfig
 	/// List of possible effects.
 	///</summary> 
 	[JsonPropertyName("effect_list")]
-	public List<string> EffectList { get; set; }
+	public List<string> EffectList { get; set; } = null!;
 
 	///<summary>
 	/// Template to extract effect from the state payload value.

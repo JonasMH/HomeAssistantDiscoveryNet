@@ -85,7 +85,7 @@ public abstract class MqttDiscoveryConfig
 
 
 	/// <summary>
-	/// When <see cref="Availablilty"/> is configured, this controls the conditions needed to set the entity to available.
+	/// When <see cref="AvailabilityMode"/> is configured, this controls the conditions needed to set the entity to available.
 	/// <br/>
 	/// If set to <see cref="MqttDiscoveryAvailabilityMode.All"/>, payload_available must be received on all configured availability topics before the entity is marked as online.
 	/// <br/>
@@ -137,7 +137,7 @@ public class MqttDiscoveryAvailablilty
 	/// An MQTT topic subscribed to receive availability (online/offline) updates.
 	/// </summary>
 	[JsonPropertyName("topic")]
-	public string Topic { get; init; }
+	public string Topic { get; init; } = null!;
 
 	/// <summary>
 	/// Defines a template to extract device’s availability from the topic. To determine the devices’s availability result of this template will be compared to payload_available and payload_not_available.

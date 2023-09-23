@@ -14,7 +14,7 @@ public class MqttTagScannerDiscoveryConfig : MqttDiscoveryConfig
 	/// The MQTT topic subscribed to receive tag scanned events.
 	///</summary> 
 	[JsonPropertyName("topic")]
-	public string Topic { get; set; }
+	public string Topic { get; set; } = null!;
 
 	///<summary>
 	/// Defines a template that returns a tag ID.
