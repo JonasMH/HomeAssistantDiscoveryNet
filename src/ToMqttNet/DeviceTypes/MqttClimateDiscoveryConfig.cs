@@ -56,6 +56,7 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -110,6 +111,7 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 21
 	///</summary> 
 	[JsonPropertyName("initial")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Initial { get; set; }
 
 	///<summary>
@@ -128,12 +130,14 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	/// Maximum set point available.
 	///</summary> 
 	[JsonPropertyName("max_temp")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? MaxTemp { get; set; }
 
 	///<summary>
 	/// Minimum set point available.
 	///</summary> 
 	[JsonPropertyName("min_temp")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? MinTemp { get; set; }
 
 	///<summary>
@@ -216,6 +220,7 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	///0.1 for Celsius and 1.0 for Fahrenheit.
 	///</summary> 
 	[JsonPropertyName("precision")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? Precision { get; set; }
 
 	///<summary>
@@ -254,6 +259,7 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -261,6 +267,7 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
@@ -377,6 +384,7 @@ public class MqttClimateDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 1
 	///</summary> 
 	[JsonPropertyName("temp_step")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? TempStep { get; set; }
 
 	///<summary>

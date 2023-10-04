@@ -21,6 +21,7 @@ public class MqttSceneDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -62,6 +63,7 @@ public class MqttSceneDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -69,5 +71,6 @@ public class MqttSceneDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 }

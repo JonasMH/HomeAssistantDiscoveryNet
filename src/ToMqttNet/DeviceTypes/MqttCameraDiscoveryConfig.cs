@@ -14,6 +14,7 @@ public class MqttCameraDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>

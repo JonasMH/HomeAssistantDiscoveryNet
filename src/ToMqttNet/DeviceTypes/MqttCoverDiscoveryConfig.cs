@@ -26,6 +26,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -67,6 +68,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	///false if state or position topic defined, else true.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -109,6 +111,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("position_closed")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? PositionClosed { get; set; }
 
 	///<summary>
@@ -116,6 +119,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("position_open")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? PositionOpen { get; set; }
 
 	///<summary>
@@ -135,6 +139,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -142,6 +147,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
@@ -202,6 +208,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("tilt_closed_value")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? TiltClosedValue { get; set; }
 
 	///<summary>
@@ -221,6 +228,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("tilt_max")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? TiltMax { get; set; }
 
 	///<summary>
@@ -228,6 +236,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("tilt_min")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? TiltMin { get; set; }
 
 	///<summary>
@@ -235,6 +244,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("tilt_opened_value")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? TiltOpenedValue { get; set; }
 
 	///<summary>
@@ -244,6 +254,7 @@ public class MqttCoverDiscoveryConfig : MqttDiscoveryConfig
 	///true if tilt_status_topic is not defined, else false
 	///</summary> 
 	[JsonPropertyName("tilt_optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? TiltOptimistic { get; set; }
 
 	///<summary>

@@ -94,6 +94,7 @@ public abstract class MqttDiscoveryConfig
 	/// If set to <see cref="MqttDiscoveryAvailabilityMode.Latest"/>, the last payload_available or payload_not_available received on any configured availability topic controls the availability.
 	/// </summary>
 	[JsonPropertyName("availability_mode")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public MqttDiscoveryAvailabilityMode? AvailabilityMode { get; init; }
 
 	/// <summary>

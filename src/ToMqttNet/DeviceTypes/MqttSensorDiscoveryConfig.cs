@@ -21,6 +21,7 @@ public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -42,6 +43,7 @@ public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("expire_after")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? ExpireAfter { get; set; }
 
 	///<summary>
@@ -49,6 +51,7 @@ public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("force_update")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? ForceUpdate { get; set; }
 
 	///<summary>
@@ -100,6 +103,7 @@ public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -107,6 +111,7 @@ public class MqttSensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: None
 	///</summary> 
 	[JsonPropertyName("state_class")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public MqttDiscoveryStateClass? StateClass { get; set; }
 
 	///<summary>

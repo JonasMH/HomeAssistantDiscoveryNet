@@ -33,6 +33,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -66,6 +67,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("max_humidity")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MaxHumidity { get; set; }
 
 	///<summary>
@@ -73,6 +75,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("min_humidity")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MinHumidity { get; set; }
 
 	///<summary>
@@ -88,6 +91,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state topic defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -192,6 +196,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -199,6 +204,7 @@ public class MqttHumidifierDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>

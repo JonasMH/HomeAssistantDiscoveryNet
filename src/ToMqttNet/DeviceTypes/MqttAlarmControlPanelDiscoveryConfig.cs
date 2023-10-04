@@ -21,6 +21,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("code_arm_required")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? CodeArmRequired { get; set; }
 
 	///<summary>
@@ -28,6 +29,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("code_disarm_required")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? CodeDisarmRequired { get; set; }
 
 	///<summary>
@@ -35,6 +37,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("code_trigger_required")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? CodeTriggerRequired { get; set; }
 
 	///<summary>
@@ -55,6 +58,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -157,6 +161,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -164,6 +169,7 @@ public class MqttAlarmControlPanelDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
