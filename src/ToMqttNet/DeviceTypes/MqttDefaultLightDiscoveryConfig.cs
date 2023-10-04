@@ -22,6 +22,7 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 255
 	///</summary> 
 	[JsonPropertyName("brightness_scale")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? BrightnessScale { get; set; }
 
 	///<summary>
@@ -83,6 +84,7 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -157,12 +159,14 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	/// The maximum color temperature in mireds.
 	///</summary> 
 	[JsonPropertyName("max_mireds")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MaxMireds { get; set; }
 
 	///<summary>
 	/// The minimum color temperature in mireds.
 	///</summary> 
 	[JsonPropertyName("min_mireds")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MinMireds { get; set; }
 
 	///<summary>
@@ -184,6 +188,7 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state topic defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -219,6 +224,7 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -226,6 +232,7 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
@@ -281,6 +288,7 @@ public class MqttDefaultLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 255
 	///</summary> 
 	[JsonPropertyName("white_scale")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? WhiteScale { get; set; }
 
 	///<summary>

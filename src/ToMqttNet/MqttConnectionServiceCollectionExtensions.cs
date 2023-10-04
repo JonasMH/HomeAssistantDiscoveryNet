@@ -1,18 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace ToMqttNet;
 
 public static class MqttConnectionServiceCollectionExtensions
 {
-	public static IServiceCollection AddMqttConnection(this IServiceCollection services, Action<MqttConnectionOptions> configureOptions)
+	public static OptionsBuilder<MqttConnectionOptions> AddMqttConnection(this IServiceCollection services)
 	{
-		services.AddOptions<MqttConnectionOptions>()
-			.Configure(configureOptions);
-
 		services.AddSingleton<MqttConnectionService>();
 		services.AddSingleton<IMqttConnectionService>(x => x.GetRequiredService<MqttConnectionService>());
 		services.AddHostedService(x => x.GetRequiredService<MqttConnectionService>());
 
-		return services;
+		return services.AddOptions<MqttConnectionOptions>();
 	}
 }

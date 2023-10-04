@@ -26,6 +26,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -67,6 +68,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state topic defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -209,6 +211,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -216,6 +219,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
@@ -223,6 +227,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("speed_range_max")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? SpeedRangeMax { get; set; }
 
 	///<summary>
@@ -230,6 +235,7 @@ public class MqttFanDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 1
 	///</summary> 
 	[JsonPropertyName("speed_range_min")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? SpeedRangeMin { get; set; }
 
 	///<summary>

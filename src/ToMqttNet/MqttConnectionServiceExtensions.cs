@@ -10,7 +10,7 @@ public static class MqttDiscoveryConfigExtensions
 	public static string ToJson<T>(this T config, JsonSerializerContext? ctx = null) where T : MqttDiscoveryConfig
 	{
 		ctx = ctx ?? MqttDiscoveryJsonContext.Default;
-		var jsonTypeInfo = ctx.GetTypeInfo(typeof(T));
+		var jsonTypeInfo = ctx.GetTypeInfo(config.GetType());
 
 		if (jsonTypeInfo == null)
 		{

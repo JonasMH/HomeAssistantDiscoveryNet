@@ -26,6 +26,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -59,6 +60,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 1
 	///</summary> 
 	[JsonPropertyName("min")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? Min { get; set; }
 
 	///<summary>
@@ -66,6 +68,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("max")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? Max { get; set; }
 
 	///<summary>
@@ -81,6 +84,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state_topic defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -95,6 +99,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -102,6 +107,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
@@ -115,6 +121,7 @@ public class MqttNumberDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 1
 	///</summary> 
 	[JsonPropertyName("step")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? Step { get; set; }
 
 	///<summary>

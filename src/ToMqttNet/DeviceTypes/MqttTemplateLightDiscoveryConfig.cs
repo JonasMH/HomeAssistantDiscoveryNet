@@ -52,6 +52,7 @@ public class MqttTemplateLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -102,12 +103,14 @@ public class MqttTemplateLightDiscoveryConfig : MqttDiscoveryConfig
 	/// The maximum color temperature in mireds.
 	///</summary> 
 	[JsonPropertyName("max_mireds")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MaxMireds { get; set; }
 
 	///<summary>
 	/// The minimum color temperature in mireds.
 	///</summary> 
 	[JsonPropertyName("min_mireds")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MinMireds { get; set; }
 
 	///<summary>
@@ -123,6 +126,7 @@ public class MqttTemplateLightDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state topic or state template is defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -144,6 +148,7 @@ public class MqttTemplateLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>

@@ -20,6 +20,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -40,6 +41,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// Defines the number of seconds after the sensor’s state expires, if it’s not updated. After expiry, the sensor’s state becomes unavailable.
 	///</summary> 
 	[JsonPropertyName("expire_after")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? ExpireAfter { get; set; }
 
 	///<summary>
@@ -47,6 +49,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("force_update")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? ForceUpdate { get; set; }
 
 	///<summary>
@@ -71,6 +74,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// For sensors that only send on state updates (like PIRs), this variable sets a delay in seconds after which the sensor’s state will be updated back to off.
 	///</summary> 
 	[JsonPropertyName("off_delay")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? OffDelay { get; set; }
 
 	///<summary>
@@ -106,6 +110,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>

@@ -16,6 +16,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("brightness")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Brightness { get; set; }
 
 	///<summary>
@@ -23,6 +24,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 255
 	///</summary> 
 	[JsonPropertyName("brightness_scale")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? BrightnessScale { get; set; }
 
 	///<summary>
@@ -30,6 +32,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("color_mode")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? ColorMode { get; set; }
 
 	///<summary>
@@ -43,6 +46,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -64,6 +68,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("effect")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Effect { get; set; }
 
 	///<summary>
@@ -77,6 +82,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 10
 	///</summary> 
 	[JsonPropertyName("flash_time_long")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? FlashTimeLong { get; set; }
 
 	///<summary>
@@ -84,6 +90,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 2
 	///</summary> 
 	[JsonPropertyName("flash_time_short")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? FlashTimeShort { get; set; }
 
 	///<summary>
@@ -102,12 +109,14 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// The maximum color temperature in mireds.
 	///</summary> 
 	[JsonPropertyName("max_mireds")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MaxMireds { get; set; }
 
 	///<summary>
 	/// The minimum color temperature in mireds.
 	///</summary> 
 	[JsonPropertyName("min_mireds")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? MinMireds { get; set; }
 
 	///<summary>
@@ -123,6 +132,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state topic defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -144,6 +154,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -151,6 +162,7 @@ public class MqttJsonLightDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>

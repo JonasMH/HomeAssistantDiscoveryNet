@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -24,7 +25,7 @@ public class MqttDiscoveryConfigTests
 	}
 
 	[Fact]
-	public void ToJson_ShouldIgnoreNull()
+	public void ToJson_ShouldIgnoreNullForObjects()
 	{
 		// Arrange
 		var sut = new MqttEventDiscoveryConfig()
@@ -37,6 +38,38 @@ public class MqttDiscoveryConfigTests
 
 		// Assert
 		Assert.Null(result["device"]);
+	}
+
+	[Theory]
+	[InlineData(typeof(MqttAlarmControlPanelDiscoveryConfig))]
+	[InlineData(typeof(MqttBinarySensorDiscoveryConfig))]
+	[InlineData(typeof(MqttButtonDiscoveryConfig))]
+	[InlineData(typeof(MqttCameraDiscoveryConfig))]
+	[InlineData(typeof(MqttClimateDiscoveryConfig))]
+	[InlineData(typeof(MqttCoverDiscoveryConfig))]
+	[InlineData(typeof(MqttDefaultLightDiscoveryConfig))]
+	[InlineData(typeof(MqttDeviceTrackerDiscoveryConfig))]
+	[InlineData(typeof(MqttDeviceTriggerDiscoveryConfig))]
+	[InlineData(typeof(MqttEventDiscoveryConfig))]
+	[InlineData(typeof(MqttFanDiscoveryConfig))]
+	[InlineData(typeof(MqttHumidifierDiscoveryConfig))]
+	[InlineData(typeof(MqttJsonLightDiscoveryConfig))]
+	[InlineData(typeof(MqttLockDiscoveryConfig))]
+	[InlineData(typeof(MqttNumberDiscoveryConfig))]
+	[InlineData(typeof(MqttSceneDiscoveryConfig))]
+	[InlineData(typeof(MqttSelectDiscoveryConfig))]
+	[InlineData(typeof(MqttSensorDiscoveryConfig))]
+	[InlineData(typeof(MqttSwitchDiscoveryConfig))]
+	[InlineData(typeof(MqttTagScannerDiscoveryConfig))]
+	[InlineData(typeof(MqttTemplateLightDiscoveryConfig))]
+	[InlineData(typeof(MqttVacuumDiscoveryConfig))]
+	public void ToJson_OutputShouldNotContainNull(Type configType)
+	{
+		var instance = (Activator.CreateInstance(configType) as MqttDiscoveryConfig)!;
+
+		var json = instance.ToJson();
+
+		Assert.DoesNotContain("null", json);
 	}
 
 	[Fact]
