@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
@@ -12,10 +13,11 @@ namespace ToMqttNet;
 public class MqttConnectionService : BackgroundService, IMqttConnectionService
 {
 	private readonly ILogger<MqttConnectionService> _logger;
+	private readonly MqttCounters _counters;
 	private string _instanceId = Guid.NewGuid().ToString();
 
 	public MqttConnectionOptions MqttOptions { get; }
-	private IManagedMqttClient? _mqttClient;
+	private readonly IManagedMqttClient _mqttClient;
 
 	public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
 	public event EventHandler<EventArgs>? OnConnect;
@@ -23,9 +25,13 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 
 	public MqttConnectionService(
 		ILogger<MqttConnectionService> logger,
-		IOptions<MqttConnectionOptions> mqttOptions)
+		IOptions<MqttConnectionOptions> mqttOptions,
+		[FromKeyedServices(typeof(MqttConnectionService))] IManagedMqttClient managedMqttClient,
+		MqttCounters counters)
 	{
 		_logger = logger;
+		_counters = counters;
+		_mqttClient = managedMqttClient;
 		MqttOptions = mqttOptions.Value;
 	}
 
@@ -54,9 +60,6 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 			.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
 			.WithClientOptions(options);
 
-		_mqttClient = new MqttFactory()
-			.CreateManagedMqttClient();
-
 		_mqttClient.ConnectedAsync += async (evnt) =>
 		{
 			_logger.LogInformation("Connected to mqtt: {reason}", evnt.ConnectResult.ReasonString);
@@ -68,29 +71,45 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 					.WithRetainFlag()
 					.Build());
 
+			_counters.SetConnections(1);
 			OnConnect?.Invoke(this, new EventArgs());
 		};
 
 		_mqttClient.DisconnectedAsync += (evnt) =>
 		{
 			_logger.LogInformation(evnt.Exception, "Disconnected from mqtt: {reason}", evnt.Reason);
+			_counters.SetConnections(0);
 			OnDisconnect?.Invoke(this, new EventArgs());
 			return Task.CompletedTask;
 		};
 
 		_mqttClient.ApplicationMessageReceivedAsync += (evnt) =>
 		{
-			_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
-			OnApplicationMessageReceived?.Invoke(this, evnt);
+			try
+			{
+				if(_logger.IsEnabled(LogLevel.Trace))
+				{
+					_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
+				}
+				
+				OnApplicationMessageReceived?.Invoke(this, evnt);
+			}catch(Exception e)
+			{
+				_logger.LogWarning(e, "Failed to handle message to topic {topic}", evnt.ApplicationMessage.Topic);
+				_counters.IncreaseMessagesHandled(false);
+				return Task.CompletedTask;
+			}
+			_counters.IncreaseMessagesHandled(true);
 			return Task.CompletedTask;
 		};
 
 		await _mqttClient.StartAsync(optionsBuilder.Build());
 	}
 
-	public Task PublishAsync(MqttApplicationMessage applicationMessages)
+	public async Task PublishAsync(MqttApplicationMessage applicationMessages)
 	{
-		return _mqttClient!.EnqueueAsync(applicationMessages);
+		await _mqttClient!.EnqueueAsync(applicationMessages);
+		_counters.IncreaseMessagesSent();
 	}
 
 	public Task SubscribeAsync(params MqttTopicFilter[] topics)
