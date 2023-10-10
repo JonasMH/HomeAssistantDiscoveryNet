@@ -55,8 +55,9 @@ public class MqttConnectionServiceTests
 		var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
 		// Act
+		_clientStub.IsConnected = true;
 		await _sut.StartAsync(cancellationTokenSource.Token);
-		await _clientStub.CallConnectedAsync(new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
+		await _clientStub.CallConnectionStateChangedAsync(new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
 
 		// Assert
 		listener.RecordObservableInstruments();
@@ -87,7 +88,7 @@ public class MqttConnectionServiceTests
 		var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
 		await _sut.StartAsync(cancellationTokenSource.Token);
-		await _clientStub.CallConnectedAsync(new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
+		await _clientStub.CallConnectionStateChangedAsync(new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
 
 		var message = new MqttApplicationMessageBuilder()
 			.WithTopic("my-topic")
@@ -106,7 +107,7 @@ public class MqttClientStub : IManagedMqttClient
 {
 	public IMqttClient InternalClient => throw new NotImplementedException();
 
-	public bool IsConnected => throw new NotImplementedException();
+	public bool IsConnected { get; set; }
 
 	public bool IsStarted => throw new NotImplementedException();
 
@@ -126,6 +127,10 @@ public class MqttClientStub : IManagedMqttClient
 
 	public event Func<ConnectingFailedEventArgs, Task> ConnectingFailedAsync = null!;
 	public event Func<EventArgs, Task> ConnectionStateChangedAsync = null!;
+	public Task CallConnectionStateChangedAsync(EventArgs args)
+	{
+		return ConnectionStateChangedAsync.Invoke(args);
+	}
 	public event Func<MqttClientDisconnectedEventArgs, Task> DisconnectedAsync = null!;
 	public Task CallDisconnectedAsync(MqttClientDisconnectedEventArgs args)
 	{
