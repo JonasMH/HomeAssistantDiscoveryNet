@@ -37,12 +37,13 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
+		_logger.LogInformation("Executing {backgroundService}", GetType().FullName);
 		var options = MqttOptions.ClientOptions;
 
 		if(string.IsNullOrEmpty(options.ClientId))
-            {
-                options.ClientId = MqttOptions.NodeId + "-" + _instanceId;
-            }
+        {
+            options.ClientId = MqttOptions.NodeId + "-" + _instanceId;
+        }
 
 		options.WillPayload = Encoding.UTF8.GetBytes("0");
 		options.WillTopic = $"{MqttOptions.NodeId}/connected";
@@ -50,20 +51,33 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 
 		if(options.ChannelOptions == null) {
 			options.ChannelOptions = new MqttClientTcpOptions
-                {
-                    Server = "mosquitto",
+            {
+                Server = "mosquitto",
 				Port = 1883
-                };
+            };
 		}
 
 		var optionsBuilder = new ManagedMqttClientOptionsBuilder()
 			.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
 			.WithClientOptions(options);
 
+		_counters.SetPendingMessages(() => _mqttClient.PendingApplicationMessagesCount);
+
+		_mqttClient.ConnectionStateChangedAsync += (evnt) => {
+			_counters.SetConnections(_mqttClient.IsConnected ? 1 : 0);
+			return Task.CompletedTask;
+		};
+
+		_mqttClient.ConnectingFailedAsync += (evnt) => {
+			_logger.LogWarning(evnt.Exception, "Connection to mqtt failed");
+
+			_counters.SetConnections(0);
+			return Task.CompletedTask;
+		};
+
 		_mqttClient.ConnectedAsync += async (evnt) =>
 		{
 			_logger.LogInformation("Connected to mqtt: {reason}", evnt.ConnectResult.ReasonString);
-
 			await _mqttClient.EnqueueAsync(
 				new MqttApplicationMessageBuilder()
 					.WithPayload("2")
@@ -71,14 +85,12 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 					.WithRetainFlag()
 					.Build());
 
-			_counters.SetConnections(1);
 			OnConnect?.Invoke(this, new EventArgs());
 		};
 
 		_mqttClient.DisconnectedAsync += (evnt) =>
 		{
 			_logger.LogInformation(evnt.Exception, "Disconnected from mqtt: {reason}", evnt.Reason);
-			_counters.SetConnections(0);
 			OnDisconnect?.Invoke(this, new EventArgs());
 			return Task.CompletedTask;
 		};
@@ -91,18 +103,18 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 				{
 					_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
 				}
-				
 				OnApplicationMessageReceived?.Invoke(this, evnt);
 			}catch(Exception e)
 			{
 				_logger.LogWarning(e, "Failed to handle message to topic {topic}", evnt.ApplicationMessage.Topic);
-				_counters.IncreaseMessagesHandled(false);
+				_counters.IncreaseMessagesHandled(success: false);
 				return Task.CompletedTask;
 			}
-			_counters.IncreaseMessagesHandled(true);
+			_counters.IncreaseMessagesHandled(success: true);
 			return Task.CompletedTask;
 		};
 
+		_logger.LogInformation("Starting mqttclient");
 		await _mqttClient.StartAsync(optionsBuilder.Build());
 	}
 
