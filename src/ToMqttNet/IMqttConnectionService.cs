@@ -1,7 +1,6 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Packets;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace ToMqttNet;
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
@@ -13,13 +12,7 @@ public static class MqttConnectionServiceCollectionExtensions
 	{
 		services.AddSingleton(x =>
 		{
-			var meterFactory = x.GetService<IMeterFactory>();
-
-			if(meterFactory == null)
-			{
-				throw new InvalidOperationException("Unable to find IMeterFactory in service collection. You may need to call .AddMetrics(). This should be automatically called in .NET8");
-			}
-
+			var meterFactory = x.GetService<IMeterFactory>() ?? throw new InvalidOperationException("Unable to find IMeterFactory in service collection. You may need to call .AddMetrics(). This should be automatically called in .NET8");
 			return new MqttCounters(meterFactory);
 		});
 		services.AddSingleton<MqttConnectionService>();

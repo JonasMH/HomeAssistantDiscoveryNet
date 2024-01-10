@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Xunit;
+using HomeAssistantDiscoveryNet;
 
 namespace ToMqttNet.Test.Unit;
 

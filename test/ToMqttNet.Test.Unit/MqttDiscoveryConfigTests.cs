@@ -1,3 +1,4 @@
+using HomeAssistantDiscoveryNet;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -63,6 +64,12 @@ public class MqttDiscoveryConfigTests
 	[InlineData(typeof(MqttTagScannerDiscoveryConfig))]
 	[InlineData(typeof(MqttTemplateLightDiscoveryConfig))]
 	[InlineData(typeof(MqttVacuumDiscoveryConfig))]
+	[InlineData(typeof(MqttTextDiscoveryConfig))]
+	[InlineData(typeof(MqttValveDiscoveryConfig))]
+	[InlineData(typeof(MqttWaterHeaterDiscoveryConfig))]
+	[InlineData(typeof(MqttUpdateDiscoveryConfig))]
+	[InlineData(typeof(MqttSirenDiscoveryConfig))]
+	[InlineData(typeof(MqttImageDiscoveryConfig))]
 	public void ToJson_OutputShouldNotContainNull(Type configType)
 	{
 		var instance = (Activator.CreateInstance(configType) as MqttDiscoveryConfig)!;

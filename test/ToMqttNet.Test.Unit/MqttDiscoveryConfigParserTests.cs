@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using HomeAssistantDiscoveryNet;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -10,7 +13,7 @@ public class MqttDiscoveryConfigParserTests
 
 	public MqttDiscoveryConfigParserTests(ITestOutputHelper testOutputHelper)
 	{
-		_sut = new MqttDiscoveryConfigParser(testOutputHelper.CreateLogger<MqttDiscoveryConfigParser>(), new List<CustomMqttDiscoveryConfigType>());
+		_sut = new MqttDiscoveryConfigParser(NullLoggerFactory.Instance, []);
 	}
 
 	[Fact]
@@ -35,5 +38,17 @@ public class MqttDiscoveryConfigParserTests
 
 		Assert.IsType<MqttJsonLightDiscoveryConfig>(result);
 		Assert.Equal(254, ((MqttJsonLightDiscoveryConfig)result).BrightnessScale);
+	}
+
+	[Fact]
+	public void Parse_ParseReadmeExample()
+	{
+		var parser = new MqttDiscoveryConfigParser(NullLoggerFactory.Instance, []);
+		var topic = "some-node/binary_sensor/some_sensor";
+		var message = "{\"component\": \"binary_sensor\", \"state_topic\": \"some-node/status/recommend-charging\", \"value_template\": \"{{ 'ON' if value_json.recommend else 'OFF' }}\", \"name\": \"Recommend Charging\", \"unique_id\": \"some-node-recommend-charging\"}";
+
+		var result = parser.Parse(topic, message);
+
+		Assert.IsType<MqttBinarySensorDiscoveryConfig>(result);
 	}
 }

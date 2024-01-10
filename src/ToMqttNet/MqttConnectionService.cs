@@ -10,30 +10,22 @@ using System.Text;
 
 namespace ToMqttNet;
 
-public class MqttConnectionService : BackgroundService, IMqttConnectionService
+public class MqttConnectionService(
+	ILogger<MqttConnectionService> logger,
+	IOptions<MqttConnectionOptions> mqttOptions,
+	[FromKeyedServices(typeof(MqttConnectionService))] IManagedMqttClient managedMqttClient,
+	MqttCounters counters) : BackgroundService, IMqttConnectionService
 {
-	private readonly ILogger<MqttConnectionService> _logger;
-	private readonly MqttCounters _counters;
-	private string _instanceId = Guid.NewGuid().ToString();
+	private readonly ILogger<MqttConnectionService> _logger = logger;
+	private readonly MqttCounters _counters = counters;
+	private readonly string _instanceId = Guid.NewGuid().ToString();
 
-	public MqttConnectionOptions MqttOptions { get; }
-	private readonly IManagedMqttClient _mqttClient;
+	public MqttConnectionOptions MqttOptions { get; } = mqttOptions.Value;
+	private readonly IManagedMqttClient _mqttClient = managedMqttClient;
 
 	public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
 	public event EventHandler<EventArgs>? OnConnect;
 	public event EventHandler<EventArgs>? OnDisconnect;
-
-	public MqttConnectionService(
-		ILogger<MqttConnectionService> logger,
-		IOptions<MqttConnectionOptions> mqttOptions,
-		[FromKeyedServices(typeof(MqttConnectionService))] IManagedMqttClient managedMqttClient,
-		MqttCounters counters)
-	{
-		_logger = logger;
-		_counters = counters;
-		_mqttClient = managedMqttClient;
-		MqttOptions = mqttOptions.Value;
-	}
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
@@ -49,13 +41,11 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 		options.WillTopic = $"{MqttOptions.NodeId}/connected";
 		options.WillRetain = true;
 
-		if(options.ChannelOptions == null) {
-			options.ChannelOptions = new MqttClientTcpOptions
+		options.ChannelOptions ??= new MqttClientTcpOptions
             {
                 Server = "mosquitto",
 				Port = 1883
             };
-		}
 
 		var optionsBuilder = new ManagedMqttClientOptionsBuilder()
 			.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
@@ -77,6 +67,7 @@ public class MqttConnectionService : BackgroundService, IMqttConnectionService
 
 		_mqttClient.ConnectedAsync += async (evnt) =>
 		{
+			_counters.NewConnection();
 			_logger.LogInformation("Connected to mqtt: {reason}", evnt.ConnectResult.ReasonString);
 			await _mqttClient.EnqueueAsync(
 				new MqttApplicationMessageBuilder()

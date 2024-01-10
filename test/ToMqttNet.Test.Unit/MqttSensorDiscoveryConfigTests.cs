@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HomeAssistantDiscoveryNet;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
