@@ -26,6 +26,7 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -46,6 +47,7 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	/// Set the initial target temperature. The default value depends on the temperature unit, and will be 43.3°C or 110°F.
 	///</summary> 
 	[JsonPropertyName("initial")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Initial { get; set; }
 
 	///<summary>
@@ -64,12 +66,14 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	/// Maximum set point available. The default value depends on the temperature unit, and will be 60°C or 140°F.
 	///</summary> 
 	[JsonPropertyName("max_temp")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? MaxTemp { get; set; }
 
 	///<summary>
 	/// Minimum set point available. The default value depends on the temperature unit, and will be 43.3°C or 110°F.
 	///</summary> 
 	[JsonPropertyName("min_temp")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? MinTemp { get; set; }
 
 	///<summary>
@@ -118,6 +122,7 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	///true if no state topic defined, else false.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -167,6 +172,7 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	///0.1 for Celsius and 1.0 for Fahrenheit.
 	///</summary> 
 	[JsonPropertyName("precision")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public double? Precision { get; set; }
 
 	///<summary>
@@ -174,6 +180,7 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -181,6 +188,7 @@ public class MqttWaterHeaterDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>

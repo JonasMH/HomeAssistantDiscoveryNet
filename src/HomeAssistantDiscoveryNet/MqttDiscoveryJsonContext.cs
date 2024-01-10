@@ -21,6 +21,7 @@ namespace HomeAssistantDiscoveryNet;
 [JsonSerializable(typeof(MqttSceneDiscoveryConfig))]
 [JsonSerializable(typeof(MqttSelectDiscoveryConfig))]
 [JsonSerializable(typeof(MqttSensorDiscoveryConfig))]
+[JsonSerializable(typeof(MqttSirenDiscoveryConfig))]
 [JsonSerializable(typeof(MqttSwitchDiscoveryConfig))]
 [JsonSerializable(typeof(MqttTagScannerDiscoveryConfig))]
 [JsonSerializable(typeof(MqttTemplateLightDiscoveryConfig))]

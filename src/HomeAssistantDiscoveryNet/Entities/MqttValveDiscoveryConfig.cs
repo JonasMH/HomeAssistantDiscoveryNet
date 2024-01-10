@@ -33,6 +33,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: true
 	///</summary> 
 	[JsonPropertyName("enabled_by_default")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? EnabledByDefault { get; set; }
 
 	///<summary>
@@ -74,6 +75,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	///false if the state or position topic is defined; true otherwise.
 	///</summary> 
 	[JsonPropertyName("optimistic")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Optimistic { get; set; }
 
 	///<summary>
@@ -115,6 +117,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("position_closed")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? PositionClosed { get; set; }
 
 	///<summary>
@@ -122,6 +125,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 100
 	///</summary> 
 	[JsonPropertyName("position_open")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? PositionOpen { get; set; }
 
 	///<summary>
@@ -129,6 +133,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: 0
 	///</summary> 
 	[JsonPropertyName("qos")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public long? Qos { get; set; }
 
 	///<summary>
@@ -136,6 +141,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("reports_position")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? ReportsPosition { get; set; }
 
 	///<summary>
@@ -143,6 +149,7 @@ public class MqttValveDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: false
 	///</summary> 
 	[JsonPropertyName("retain")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 	public bool? Retain { get; set; }
 
 	///<summary>
