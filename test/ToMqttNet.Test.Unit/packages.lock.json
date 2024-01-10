@@ -1102,11 +1102,10 @@
       "tomqttnet": {
         "type": "Project",
         "dependencies": {
-          "HomeAssistantDiscoveryNet": "[1.0.0, )",
+          "HomeAssistantDiscoveryNet": "[0.1.4, )",
           "MQTTnet": "[4.3.3.952, )",
           "MQTTnet.Extensions.ManagedClient": "[4.3.3.952, )",
           "Microsoft.Extensions.Hosting.Abstractions": "[8.0.0, )",
-          "Microsoft.Extensions.Options": "[8.0.1, )",
           "Microsoft.Extensions.Options.DataAnnotations": "[8.0.0, )"
         }
       }
