@@ -1,4 +1,5 @@
-﻿using MQTTnet.Client;
+﻿using HomeAssistantDiscoveryNet;
+using MQTTnet.Client;
 using System.ComponentModel.DataAnnotations;
 
 namespace ToMqttNet;
@@ -9,4 +10,6 @@ public class MqttConnectionOptions
 	public string NodeId { get; set; } = null!;
 
 	public MqttClientOptions ClientOptions { get; set; } = new MqttClientOptions { };
+
+	public MqttDiscoveryConfigOrigin? OriginConfig { get; set; }
 }

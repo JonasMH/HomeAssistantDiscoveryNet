@@ -3,7 +3,6 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -16,9 +15,9 @@ namespace ToMqttNet.Test.Unit;
 
 public class MqttConnectionServiceTests
 {
-	private MqttConnectionService _sut;
-	private MeterFactoryStub _meterFactoryStub;
-	private MqttClientStub _clientStub;
+	private readonly MqttConnectionService _sut;
+	private readonly MeterFactoryStub _meterFactoryStub;
+	private readonly MqttClientStub _clientStub;
 
 	public MqttConnectionServiceTests(ITestOutputHelper testOutputHelper)
 	{
@@ -138,8 +137,8 @@ public class MqttClientStub : IManagedMqttClient
 	}
 	public event Func<ManagedProcessFailedEventArgs, Task> SynchronizingSubscriptionsFailedAsync = null!;
 
-	public List<MqttApplicationMessage> EnqueuedMessage = new List<MqttApplicationMessage>();
-	public List<MqttTopicFilter> Subscriptions = new List<MqttTopicFilter>();
+	public List<MqttApplicationMessage> EnqueuedMessage = [];
+	public List<MqttTopicFilter> Subscriptions = [];
 
 	public void Dispose(){}
 
