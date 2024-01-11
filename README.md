@@ -7,7 +7,12 @@ This project contains two libraries that are both published to Nuget
 
 ## HomeAssistantDiscoveryNet Library
 
-Contains the following (Home Assistant MQTT Discovery Documents)[https://www.home-assistant.io/integrations/mqtt/#mqtt-discovery] as C\# classes:
+Features:
+
+- Support all Home Assistant Discovery (See full list below)
+- De(serilization) using `System.Text.Json` source generators (AoT Compatible)
+
+Contains the following [Home Assistant MQTT Discovery Documents](https://www.home-assistant.io/integrations/mqtt/#mqtt-discovery) as C\# classes:
 
 - AlarmControlPanel
 - BinarySensor
@@ -40,8 +45,6 @@ Contains the following (Home Assistant MQTT Discovery Documents)[https://www.hom
 - WaterHeater
 
 This makes it easy to create discovery documents from C\# without having to worry about mistyping property names etc.
-
-It also including de(serilization) using `System.Text.Json` source generators (AoT Compatible)
 
 ### How to serialize discovery docs
 
