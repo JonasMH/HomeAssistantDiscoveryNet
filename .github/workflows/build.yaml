@@ -62,7 +62,7 @@ jobs:
           echo Version: $VERSION
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
-          dotnet pack -o artifacts/packs -v normal -c Release --no-restore -p:PackageVersion=$VERSION HomeAssistantDiscoveryNet.sln
+          dotnet pack -o artifacts/packs -v normal -c Release -p:PackageVersion=$VERSION HomeAssistantDiscoveryNet.sln
       - name: Push to GitHub Feed
         run: |
           for f in ./artifacts/packs/*.nupkg
