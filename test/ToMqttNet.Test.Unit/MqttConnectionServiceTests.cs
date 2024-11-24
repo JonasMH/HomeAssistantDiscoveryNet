@@ -136,6 +136,7 @@ public class MqttClientStub : IManagedMqttClient
 		return DisconnectedAsync.Invoke(args);
 	}
 	public event Func<ManagedProcessFailedEventArgs, Task> SynchronizingSubscriptionsFailedAsync = null!;
+	public event Func<SubscriptionsChangedEventArgs, Task> SubscriptionsChangedAsync;
 
 	public List<MqttApplicationMessage> EnqueuedMessage = [];
 	public List<MqttTopicFilter> Subscriptions = [];
@@ -176,7 +177,17 @@ public class MqttClientStub : IManagedMqttClient
 
 	public Task UnsubscribeAsync(ICollection<string> topics)
 	{
-		throw new NotImplementedException();
+		return Task.CompletedTask;
+	}
+
+	public Task SubscribeAsync(IEnumerable<MqttTopicFilter> topicFilters)
+	{
+		return Task.CompletedTask;
+	}
+
+	public Task UnsubscribeAsync(IEnumerable<string> topics)
+	{
+		return Task.CompletedTask;
 	}
 }
 
