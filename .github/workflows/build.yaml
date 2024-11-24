@@ -32,11 +32,11 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0"
+          dotnet-version: "9.0.100"
           cache: true
           cache-dependency-path: src/ToMqttNet/packages.lock.json
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore --locked-mode
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
@@ -52,7 +52,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0"
+          dotnet-version: "9.0.100"
           cache: true
           cache-dependency-path: src/ToMqttNet/packages.lock.json
       - name: Create Release NuGet package
