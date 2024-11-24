@@ -3,9 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 

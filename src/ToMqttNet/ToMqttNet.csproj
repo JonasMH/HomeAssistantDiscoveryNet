@@ -9,9 +9,6 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<IncludeSymbols>true</IncludeSymbols>
 
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-
 		<Version>0.1.4</Version>
 		<Authors>JonasMH</Authors>
 		<PackageDescription>ASP.NET Hosted MQTT Connection and models to make it easier to work with Home Assistant MQTT Discovery</PackageDescription>

@@ -34,9 +34,8 @@ jobs:
         with:
           dotnet-version: "9.0.100"
           cache: true
-          cache-dependency-path: src/ToMqttNet/packages.lock.json
       - name: Restore
-        run: dotnet restore --locked-mode
+        run: dotnet restore
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
@@ -54,7 +53,6 @@ jobs:
         with:
           dotnet-version: "9.0.100"
           cache: true
-          cache-dependency-path: src/ToMqttNet/packages.lock.json
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
