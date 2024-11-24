@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
@@ -21,13 +22,17 @@ public class MqttConnectionServiceTests
 
 	public MqttConnectionServiceTests(ITestOutputHelper testOutputHelper)
 	{
+		var serviceCollection = new ServiceCollection();
+		var provider = serviceCollection.BuildServiceProvider();
+
 		_meterFactoryStub = new MeterFactoryStub();
 		_clientStub = new MqttClientStub();
 		_sut = new MqttConnectionService(
 			testOutputHelper.CreateLogger<MqttConnectionService>(),
 			Options.Create(new MqttConnectionOptions()),
 			_clientStub,
-			new MqttCounters(_meterFactoryStub));
+			new MqttCounters(_meterFactoryStub),
+			provider);
 	}
 
 	[Fact]
@@ -70,7 +75,7 @@ public class MqttConnectionServiceTests
 		var messagesSent = -1L;
 		listener.InstrumentPublished = (instrument, listener) =>
 		{
-			if(instrument.Meter.Name == "ToMqttNet")
+			if (instrument.Meter.Name == "ToMqttNet")
 			{
 				listener.EnableMeasurementEvents(instrument);
 			}
@@ -141,7 +146,7 @@ public class MqttClientStub : IManagedMqttClient
 	public List<MqttApplicationMessage> EnqueuedMessage = [];
 	public List<MqttTopicFilter> Subscriptions = [];
 
-	public void Dispose(){}
+	public void Dispose() { }
 
 	public Task EnqueueAsync(MqttApplicationMessage applicationMessage)
 	{
@@ -198,5 +203,5 @@ public class MeterFactoryStub : IMeterFactory
 		return new Meter(options);
 	}
 
-	public void Dispose(){}
+	public void Dispose() { }
 }

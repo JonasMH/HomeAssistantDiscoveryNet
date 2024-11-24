@@ -6,6 +6,8 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ToMqttNet;
@@ -14,11 +16,13 @@ public class MqttConnectionService(
 	ILogger<MqttConnectionService> logger,
 	IOptions<MqttConnectionOptions> mqttOptions,
 	[FromKeyedServices(typeof(MqttConnectionService))] IManagedMqttClient managedMqttClient,
-	MqttCounters counters) : BackgroundService, IMqttConnectionService
+	MqttCounters counters,
+	IServiceProvider serviceProvider) : BackgroundService, IMqttConnectionService
 {
 	private readonly ILogger<MqttConnectionService> _logger = logger;
 	private readonly MqttCounters _counters = counters;
 	private readonly string _instanceId = Guid.NewGuid().ToString();
+	private WatchingMqttCertificateProvider? _certificateWatcher;
 
 	public MqttConnectionOptions MqttOptions { get; } = mqttOptions.Value;
 	private readonly IManagedMqttClient _mqttClient = managedMqttClient;
@@ -30,22 +34,18 @@ public class MqttConnectionService(
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
 		_logger.LogInformation("Executing {backgroundService}", GetType().FullName);
-		var options = MqttOptions.ClientOptions;
+		var options = new MqttClientOptions { };
 
-		if(string.IsNullOrEmpty(options.ClientId))
-        {
-            options.ClientId = MqttOptions.NodeId + "-" + _instanceId;
-        }
+		if (string.IsNullOrEmpty(options.ClientId))
+		{
+			options.ClientId = MqttOptions.NodeId + "-" + _instanceId;
+		}
 
 		options.WillPayload = Encoding.UTF8.GetBytes("0");
 		options.WillTopic = $"{MqttOptions.NodeId}/connected";
 		options.WillRetain = true;
 
-		options.ChannelOptions ??= new MqttClientTcpOptions
-            {
-                Server = "mosquitto",
-				Port = 1883
-            };
+		options.ChannelOptions = BuildChannelOptions();
 
 		var optionsBuilder = new ManagedMqttClientOptionsBuilder()
 			.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
@@ -53,12 +53,14 @@ public class MqttConnectionService(
 
 		_counters.SetPendingMessages(() => _mqttClient.PendingApplicationMessagesCount);
 
-		_mqttClient.ConnectionStateChangedAsync += (evnt) => {
+		_mqttClient.ConnectionStateChangedAsync += (evnt) =>
+		{
 			_counters.SetConnections(_mqttClient.IsConnected ? 1 : 0);
 			return Task.CompletedTask;
 		};
 
-		_mqttClient.ConnectingFailedAsync += (evnt) => {
+		_mqttClient.ConnectingFailedAsync += (evnt) =>
+		{
 			_logger.LogWarning(evnt.Exception, "Connection to mqtt failed");
 
 			_counters.SetConnections(0);
@@ -90,12 +92,13 @@ public class MqttConnectionService(
 		{
 			try
 			{
-				if(_logger.IsEnabled(LogLevel.Trace))
+				if (_logger.IsEnabled(LogLevel.Trace))
 				{
 					_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
 				}
 				OnApplicationMessageReceived?.Invoke(this, evnt);
-			}catch(Exception e)
+			}
+			catch (Exception e)
 			{
 				_logger.LogWarning(e, "Failed to handle message to topic {topic}", evnt.ApplicationMessage.Topic);
 				_counters.IncreaseMessagesHandled(success: false);
@@ -123,5 +126,43 @@ public class MqttConnectionService(
 	public Task UnsubscribeAsync(params string[] topics)
 	{
 		return _mqttClient!.UnsubscribeAsync(topics);
+	}
+
+	private IMqttClientChannelOptions BuildChannelOptions()
+	{
+		var tcpOptions = new MqttClientTcpOptions
+		{
+			RemoteEndpoint = new DnsEndPoint(MqttOptions.Server ?? "mosquitto", MqttOptions.Port ?? 1883),
+		};
+
+		if (MqttOptions.UseTls)
+		{
+			_certificateWatcher = ActivatorUtilities.CreateInstance<WatchingMqttCertificateProvider>(serviceProvider);
+
+			tcpOptions.TlsOptions = new MqttClientTlsOptions
+			{
+				UseTls = true,
+				SslProtocol = System.Security.Authentication.SslProtocols.Tls12,
+				ClientCertificatesProvider = _certificateWatcher,
+				CertificateValidationHandler = (certContext) =>
+				{
+					X509Chain chain = new();
+					chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+					chain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+					chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+					chain.ChainPolicy.VerificationTime = DateTime.Now;
+					chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 0, 0);
+					chain.ChainPolicy.CustomTrustStore.Add(_certificateWatcher.CaCertificate!);
+					chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+
+					// convert provided X509Certificate to X509Certificate2
+					var x5092 = new X509Certificate2(certContext.Certificate);
+
+					return chain.Build(x5092);
+				}
+			};
+		}
+
+		return tcpOptions;
 	}
 }
