@@ -33,7 +33,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0.100"
-          cache: true
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -52,7 +51,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0.100"
-          cache: true
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
