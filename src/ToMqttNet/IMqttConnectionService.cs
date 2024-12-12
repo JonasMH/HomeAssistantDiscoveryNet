@@ -6,9 +6,9 @@ namespace ToMqttNet;
 
 public interface IMqttConnectionService
 {
-	public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
-	public event EventHandler<EventArgs>? OnConnect;
-	public event EventHandler<EventArgs>? OnDisconnect;
+	event Func<MqttApplicationMessageReceivedEventArgs, Task>? OnApplicationMessageReceivedAsync;
+	event Func<MqttClientConnectedEventArgs, Task>? OnConnectAsync;
+	event Func<MqttClientDisconnectedEventArgs, Task>? OnDisconnectAsync;
 
 	MqttConnectionOptions MqttOptions { get; }
 

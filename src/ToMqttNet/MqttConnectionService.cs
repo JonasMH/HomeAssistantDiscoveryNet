@@ -27,9 +27,9 @@ public class MqttConnectionService(
 	public MqttConnectionOptions MqttOptions { get; } = mqttOptions.Value;
 	private readonly IManagedMqttClient _mqttClient = managedMqttClient;
 
-	public event EventHandler<MqttApplicationMessageReceivedEventArgs>? OnApplicationMessageReceived;
-	public event EventHandler<EventArgs>? OnConnect;
-	public event EventHandler<EventArgs>? OnDisconnect;
+	public event Func<MqttApplicationMessageReceivedEventArgs, Task>? OnApplicationMessageReceivedAsync;
+	public event Func<MqttClientConnectedEventArgs, Task>? OnConnectAsync;
+	public event Func<MqttClientDisconnectedEventArgs, Task>? OnDisconnectAsync;
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
@@ -78,17 +78,22 @@ public class MqttConnectionService(
 					.WithRetainFlag()
 					.Build());
 
-			OnConnect?.Invoke(this, new EventArgs());
+			if (OnConnectAsync != null)
+			{
+				await OnConnectAsync(evnt);
+			}
 		};
 
-		_mqttClient.DisconnectedAsync += (evnt) =>
+		_mqttClient.DisconnectedAsync += async (evnt) =>
 		{
 			_logger.LogInformation(evnt.Exception, "Disconnected from mqtt: {reason}", evnt.Reason);
-			OnDisconnect?.Invoke(this, new EventArgs());
-			return Task.CompletedTask;
+			if (OnDisconnectAsync != null)
+			{
+				await OnDisconnectAsync(evnt);
+			}
 		};
 
-		_mqttClient.ApplicationMessageReceivedAsync += (evnt) =>
+		_mqttClient.ApplicationMessageReceivedAsync += async (evnt) =>
 		{
 			try
 			{
@@ -96,16 +101,17 @@ public class MqttConnectionService(
 				{
 					_logger.LogTrace("{topic}: {message}", evnt.ApplicationMessage.Topic, evnt.ApplicationMessage.ConvertPayloadToString());
 				}
-				OnApplicationMessageReceived?.Invoke(this, evnt);
+				if (OnApplicationMessageReceivedAsync != null)
+				{
+					await OnApplicationMessageReceivedAsync(evnt);
+				}
 			}
 			catch (Exception e)
 			{
 				_logger.LogWarning(e, "Failed to handle message to topic {topic}", evnt.ApplicationMessage.Topic);
 				_counters.IncreaseMessagesHandled(success: false);
-				return Task.CompletedTask;
 			}
 			_counters.IncreaseMessagesHandled(success: true);
-			return Task.CompletedTask;
 		};
 
 		_logger.LogInformation("Starting mqttclient");
@@ -128,7 +134,7 @@ public class MqttConnectionService(
 		return _mqttClient!.UnsubscribeAsync(topics);
 	}
 
-	private IMqttClientChannelOptions BuildChannelOptions()
+	private MqttClientTcpOptions BuildChannelOptions()
 	{
 		var tcpOptions = new MqttClientTcpOptions
 		{
