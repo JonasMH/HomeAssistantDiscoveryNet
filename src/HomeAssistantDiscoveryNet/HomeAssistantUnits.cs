@@ -25,7 +25,7 @@ public class HomeAssistantUnits(string value)
 	
 	// Voltage units
 	[Obsolete("This property is obsolete. Use VOLTAGE_VOLTS instead.")]
-	public static HomeAssistantUnits VOLTS { get; } = new HomeAssistantUnits("V");
+	public static HomeAssistantUnits VOLT { get; } = new HomeAssistantUnits("V");
 	public static HomeAssistantUnits VOLTAGE_VOLTS { get; } = new HomeAssistantUnits("V");
 	public static HomeAssistantUnits VOLTAGE_MILLI_VOLTS { get; } = new HomeAssistantUnits("mV");
 	public static HomeAssistantUnits VOLTAGE_MICRO_VOLTS { get; } = new HomeAssistantUnits("µV");
