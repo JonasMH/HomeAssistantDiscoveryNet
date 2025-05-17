@@ -107,6 +107,7 @@ public abstract class MqttDiscoveryConfig
 
 
 	public abstract string Component { get; }
+	public string Platform => Component;
 }
 
 public class MqttDiscoveryConfigOrigin
