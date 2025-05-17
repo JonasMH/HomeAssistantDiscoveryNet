@@ -105,6 +105,8 @@ public abstract class MqttDiscoveryConfig
 	[JsonPropertyName("origin")]
 	public MqttDiscoveryConfigOrigin? Origin { get; set; }
 
+	[JsonPropertyName("attributes")]
+	public Dictionary<string, object>? Attributes { get; set; }
 
 	public abstract string Component { get; }
 }
