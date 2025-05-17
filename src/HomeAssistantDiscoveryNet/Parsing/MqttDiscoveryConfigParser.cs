@@ -37,6 +37,7 @@ public class MqttDiscoveryConfigParser(
 		{ "text", typeof(MqttTextDiscoveryConfig) },
 		{ "valve", typeof(MqttValveDiscoveryConfig) },
 		{ "water_heater", typeof(MqttWaterHeaterDiscoveryConfig) },
+		{ "notify", typeof(MqttNotifyDiscoveryConfig) }
 	});
 
 	private readonly ILogger<MqttDiscoveryConfigParser> _logger = loggerFactory.CreateLogger<MqttDiscoveryConfigParser>();
