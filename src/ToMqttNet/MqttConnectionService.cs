@@ -36,10 +36,11 @@ public class MqttConnectionService(
 		_logger.LogInformation("Executing {backgroundService}", GetType().FullName);
 
 		var optionsBuilder = new MqttClientOptionsBuilder()
+			.WithClientId($"{MqttOptions.NodeId}-{_instanceId}")
 			.WithWillPayload(Encoding.UTF8.GetBytes("0"))
 			.WithWillTopic($"{MqttOptions.NodeId}/connected")
 			.WithWillRetain();
-
+		
 		if (!string.IsNullOrEmpty(MqttOptions.Username) && !string.IsNullOrEmpty(MqttOptions.Password))
 		{
 			optionsBuilder.WithCredentials(MqttOptions.Username, MqttOptions.Password);
