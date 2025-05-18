@@ -171,7 +171,7 @@ public class HomeAssistantUnits(string value)
 
 	// Irradiation units
 	public static HomeAssistantUnits IRRADIATION_WATTS_PER_SQUARE_METER { get; } = new HomeAssistantUnits("W/m²");
-	public static HomeAssistantUnits IRRADIATION_BTU_PER_HOUR_PER_SQUARE_FOOT { get; } = new HomeAssistantUnits(" BTU/(h⋅ft²)");
+	public static HomeAssistantUnits IRRADIATION_BTU_PER_HOUR_PER_SQUARE_FOOT { get; } = new HomeAssistantUnits("BTU/(h⋅ft²)");
 
 	// Precipitation units
 	public static HomeAssistantUnits PRECIPITATION_MILLIMETERS_PER_HOUR { get; } = new HomeAssistantUnits("mm/h");
