@@ -109,6 +109,7 @@ public abstract class MqttDiscoveryConfig
 	public Dictionary<string, object>? Attributes { get; set; }
 
 	public abstract string Component { get; }
+	public string Platform => Component;
 }
 
 public class MqttDiscoveryConfigOrigin
