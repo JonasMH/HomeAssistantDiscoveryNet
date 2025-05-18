@@ -33,6 +33,7 @@ namespace HomeAssistantDiscoveryNet;
 [JsonSerializable(typeof(MqttValveDiscoveryConfig))]
 [JsonSerializable(typeof(MqttWaterHeaterDiscoveryConfig))]
 [JsonSerializable(typeof(MqttNotifyDiscoveryConfig))]
+[JsonSerializable(typeof(MqttDeviceDiscoveryConfig))]
 [JsonSerializable(typeof(JsonObject))]
 [JsonSourceGenerationOptions(
 	WriteIndented = true,

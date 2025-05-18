@@ -45,9 +45,10 @@ public class MqttConnectionService(
 		{
 			optionsBuilder.WithCredentials(MqttOptions.Username, MqttOptions.Password);
 		}
+
+		SetupChannelOptions(optionsBuilder);
 		
 		var options = optionsBuilder.Build();
-		options.ChannelOptions = BuildChannelOptions();
 
 		var managedOptions = new ManagedMqttClientOptionsBuilder()
 			.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
@@ -137,18 +138,14 @@ public class MqttConnectionService(
 		return _mqttClient!.UnsubscribeAsync(topics);
 	}
 
-	private MqttClientTcpOptions BuildChannelOptions()
+	private MqttClientOptionsBuilder SetupChannelOptions(MqttClientOptionsBuilder optionsBuilder)
 	{
-		var tcpOptions = new MqttClientTcpOptions
-		{
-			RemoteEndpoint = new DnsEndPoint(MqttOptions.Server ?? "mosquitto", MqttOptions.Port ?? 1883),
-		};
+		optionsBuilder.WithTcpServer(MqttOptions.Server ?? "mosquitto", MqttOptions.Port ?? 1883);
 
 		if (MqttOptions.UseTls)
 		{
 			_certificateWatcher = ActivatorUtilities.CreateInstance<WatchingMqttCertificateProvider>(serviceProvider);
-
-			tcpOptions.TlsOptions = new MqttClientTlsOptions
+			optionsBuilder.WithTlsOptions(new MqttClientTlsOptions
 			{
 				UseTls = true,
 				SslProtocol = System.Security.Authentication.SslProtocols.Tls12,
@@ -169,9 +166,9 @@ public class MqttConnectionService(
 
 					return chain.Build(x5092);
 				}
-			};
+			});
 		}
 
-		return tcpOptions;
+		return optionsBuilder;
 	}
 }

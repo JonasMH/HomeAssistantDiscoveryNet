@@ -107,6 +107,7 @@ public class MqttConnectionServiceTests
 	}
 }
 
+#pragma warning disable
 public class MqttClientStub : IManagedMqttClient
 {
 	public IMqttClient InternalClient => throw new NotImplementedException();

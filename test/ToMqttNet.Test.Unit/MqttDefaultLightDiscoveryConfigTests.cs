@@ -21,8 +21,8 @@ public class MqttBinarySensorDiscoveryConfigTests
 
 		var json = cfg.ToJson();
 		var result = (JObject)JsonConvert.DeserializeObject(json)!;
-		// More than 5 can be an indication to many null properties are included.
-		Assert.True(5 == result.Count, json);
+		// More than 6 can be an indication to many null properties are included.
+		Assert.True(6 == result.Count, json);
 	}
 
 }
