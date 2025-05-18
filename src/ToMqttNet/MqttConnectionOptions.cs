@@ -15,6 +15,8 @@ public class MqttConnectionOptions
     public string? CaCrt { get; set; }
     public string? ClientCrt { get; set; }
     public string? ClientKey { get; set; }
+    public string? Username { get; set; }
+    public string? Password { get; set; }
 
     public MqttDiscoveryConfigOrigin? OriginConfig { get; set; }
 }

@@ -34,23 +34,26 @@ public class MqttConnectionService(
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
 		_logger.LogInformation("Executing {backgroundService}", GetType().FullName);
-		var options = new MqttClientOptions { };
 
-		if (string.IsNullOrEmpty(options.ClientId))
+		var optionsBuilder = new MqttClientOptionsBuilder()
+			.WithClientId($"{MqttOptions.NodeId}-{_instanceId}")
+			.WithWillPayload(Encoding.UTF8.GetBytes("0"))
+			.WithWillTopic($"{MqttOptions.NodeId}/connected")
+			.WithWillRetain();
+		
+		if (!string.IsNullOrEmpty(MqttOptions.Username) && !string.IsNullOrEmpty(MqttOptions.Password))
 		{
-			options.ClientId = MqttOptions.NodeId + "-" + _instanceId;
+			optionsBuilder.WithCredentials(MqttOptions.Username, MqttOptions.Password);
 		}
-
-		options.WillPayload = Encoding.UTF8.GetBytes("0");
-		options.WillTopic = $"{MqttOptions.NodeId}/connected";
-		options.WillRetain = true;
-
+		
+		var options = optionsBuilder.Build();
 		options.ChannelOptions = BuildChannelOptions();
 
-		var optionsBuilder = new ManagedMqttClientOptionsBuilder()
+		var managedOptions = new ManagedMqttClientOptionsBuilder()
 			.WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
-			.WithClientOptions(options);
-
+			.WithClientOptions(options)
+			.Build();
+		
 		_counters.SetPendingMessages(() => _mqttClient.PendingApplicationMessagesCount);
 
 		_mqttClient.ConnectionStateChangedAsync += (evnt) =>
@@ -115,7 +118,7 @@ public class MqttConnectionService(
 		};
 
 		_logger.LogInformation("Starting mqttclient");
-		await _mqttClient.StartAsync(optionsBuilder.Build());
+		await _mqttClient.StartAsync(managedOptions);
 	}
 
 	public async Task PublishAsync(MqttApplicationMessage applicationMessages)
