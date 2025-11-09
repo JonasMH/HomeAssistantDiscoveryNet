@@ -51,7 +51,7 @@ public class WatchingMqttCertificateProvider : IMqttClientCertificatesProvider
 
             if (_options.CaCrt != null)
             {
-                CaCertificate = new X509Certificate2(_options.CaCrt);
+                CaCertificate = X509CertificateLoader.LoadCertificateFromFile(_options.CaCrt);
                 ClientCertificates.Add(CaCertificate);
                 _logger.LogInformation("Loaded CA Certificate {name} from {path}", CaCertificate.Thumbprint, _options.CaCrt);
             }

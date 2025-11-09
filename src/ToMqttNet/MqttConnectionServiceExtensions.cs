@@ -14,7 +14,7 @@ public static class MqttDiscoveryConfigExtensions
 		var jsonTypeInfo = ctx.GetTypeInfo(config.GetType()) ?? throw new InvalidOperationException("The JsonTypeInfo for " + config.GetType().FullName + " was not found in the provided JsonSerializerContext. If you have a custom Discovery Document you might need to provide your own JsonSerializerContext");
 		return JsonSerializer.Serialize(config, jsonTypeInfo);
 	}
-	
+
 	public static string ToJson(this MqttDeviceDiscoveryConfig deviceConfig, JsonSerializerContext? ctx = null)
 	{
 		ctx ??= MqttDiscoveryJsonContext.Default;
@@ -46,11 +46,10 @@ public static class MqttConnectionServiceExtensions
 				.WithPayload(config.ToJson(ctx))
 				.Build());
 	}
-	
+
 	/// <summary>
 	/// Publishes the given device discovery document.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
 	/// <param name="connection"></param>
 	/// <param name="deviceConfig"></param>
 	/// <param name="ctx"></param>

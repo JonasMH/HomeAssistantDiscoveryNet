@@ -96,6 +96,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: OFF
 	///</summary> 
 	[JsonPropertyName("payload_off")]
+	[JsonConverter(typeof(HomeAssistantTemplateStringConverter))]
 	public string? PayloadOff { get; set; }
 
 	///<summary>
@@ -103,6 +104,7 @@ public class MqttBinarySensorDiscoveryConfig : MqttDiscoveryConfig
 	/// , default: ON
 	///</summary> 
 	[JsonPropertyName("payload_on")]
+	[JsonConverter(typeof(HomeAssistantTemplateStringConverter))]
 	public string? PayloadOn { get; set; }
 
 	///<summary>

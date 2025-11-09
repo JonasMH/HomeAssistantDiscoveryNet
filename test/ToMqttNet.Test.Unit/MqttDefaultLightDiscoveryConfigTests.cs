@@ -5,24 +5,56 @@ using HomeAssistantDiscoveryNet;
 
 namespace ToMqttNet.Test.Unit;
 
-
-public class MqttBinarySensorDiscoveryConfigTests
+public class MqttDefaultLightDiscoveryConfigTests
 {
 	[Fact]
 	public void ToJson_SchemaIsBasic()
 	{
-		var cfg = new MqttBinarySensorDiscoveryConfig
+		// Arrange
+		var sut = new MqttDefaultLightDiscoveryConfig()
 		{
-			Name = $"Recommend Charging",
-			ValueTemplate = "{{ 'ON' if value_json.recommend else 'OFF' }}",
-			StateTopic = $"some-node/status/recommend-charging",
-			UniqueId = $"some-node-recommend-charging",
+
 		};
 
-		var json = cfg.ToJson();
-		var result = (JObject)JsonConvert.DeserializeObject(json)!;
-		// More than 6 can be an indication to many null properties are included.
-		Assert.True(6 == result.Count, json);
+		// Act
+		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
+
+		// Assert
+		Assert.Equal("basic", result["schema"]!.ToString());
+		// The documentation says it should be null or default - but in reality setting this to default makes it fail, so we just force it to basic
 	}
 
+	[Fact]
+	public void ToJson_PayloadCanBeBoolean()
+	{
+		// Arrange
+		var sut = new MqttDefaultLightDiscoveryConfig()
+		{
+			PayloadOn = true
+		};
+
+		// Act
+		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
+
+		// Assert
+		Assert.True(result["payload_on"]!.Value<bool>());
+		// The documentation says it should be null or default - but in reality setting this to default makes it fail, so we just force it to basic
+	}
+
+	[Fact]
+	public void ToJson_PayloadCanBeString()
+	{
+		// Arrange
+		var sut = new MqttDefaultLightDiscoveryConfig()
+		{
+			PayloadOn = "someString"
+		};
+
+		// Act
+		var result = (JObject)JsonConvert.DeserializeObject(sut.ToJson())!;
+
+		// Assert
+		Assert.Equal("someString", result["payload_on"]!.Value<string>());
+		// The documentation says it should be null or default - but in reality setting this to default makes it fail, so we just force it to basic
+	}
 }

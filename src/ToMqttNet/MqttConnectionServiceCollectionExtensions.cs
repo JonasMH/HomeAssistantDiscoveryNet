@@ -19,7 +19,8 @@ public static class MqttConnectionServiceCollectionExtensions
 		services.AddSingleton<IMqttConnectionService>(x => x.GetRequiredService<MqttConnectionService>());
 		services.AddHostedService(x => x.GetRequiredService<MqttConnectionService>());
 		services.AddKeyedSingleton(typeof(MqttConnectionService), (services, key) => new MqttFactory().CreateManagedMqttClient());
-		services.AddOptions<MqttConnectionOptions>().BindConfiguration(MqttConnectionOptions.Section);
+		services.AddOptions<MqttConnectionOptions>()
+			.BindConfiguration(MqttConnectionOptions.Section);
 
 		return services.AddOptions<MqttConnectionOptions>();
 	}

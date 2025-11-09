@@ -15,6 +15,8 @@
 		<RepositoryUrl>https://github.com/JonasMH/HomeAssistantDiscoveryNet</RepositoryUrl>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
+		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 
