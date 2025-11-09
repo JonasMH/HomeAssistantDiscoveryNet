@@ -8,6 +8,8 @@
 		<PublishAot>true</PublishAot>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<IncludeSymbols>true</IncludeSymbols>
+		<IsTrimmable>true</IsTrimmable>
+		<IsAotCompatible>true</IsAotCompatible>
 
 		<Version>0.1.4</Version>
 		<Authors>JonasMH</Authors>

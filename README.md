@@ -14,35 +14,7 @@ Features:
 
 Contains the following [Home Assistant MQTT Discovery Documents](https://www.home-assistant.io/integrations/mqtt/#mqtt-discovery) as C\# classes:
 
-- AlarmControlPanel
-- BinarySensor
-- Button
-- Camera
-- Climate
-- Cover
-- DefaultLight
-- DeviceTracker
-- DeviceTrigger
-- Event
-- Fan
-- Humidifier
-- Image
-- JsonLight
-- LawnMower
-- Lock
-- Number
-- Scene
-- Select
-- Sensor
-- Siren
-- Switch
-- TagScanner
-- TemplateLight
-- Text
-- Update
-- Vacuum
-- Valve
-- WaterHeater
+`AlarmControlPanel`, `BinarySensor`, `Button`, `Camera`, `Climate`, `Cover`, `DefaultLight`, `DeviceTracker`, `DeviceTrigger`, `Event`, `Fan`, `Humidifier`, `Image`, `JsonLight`, `LawnMower`, `Lock`, `Number`, `Scene`, `Select`, `Sensor`, `Siren`, `Switch`, `TagScanner`, `TemplateLight`, `Text`, `Update`, `Vacuum`, `Valve`, `WaterHeater`
 
 This makes it easy to create discovery documents from C\# without having to worry about mistyping property names etc.
 
