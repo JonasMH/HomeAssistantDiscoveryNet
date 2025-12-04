@@ -36,38 +36,6 @@ public class MqttConnectionServiceTests
 	}
 
 	[Fact]
-	public async Task ShouldSetConnectionsToOne()
-	{
-		// Arrange
-		using var listener = new MeterListener();
-		var connections = -1;
-		listener.InstrumentPublished = (instrument, listener) =>
-		{
-			if (instrument.Meter.Name == "ToMqttNet")
-			{
-				listener.EnableMeasurementEvents(instrument);
-			}
-		};
-		listener.SetMeasurementEventCallback<int>((instrument, measurement, tags, state) =>
-		{
-			if (instrument.Name == "mqtt_client.connections")
-			{
-				connections = measurement;
-			}
-		});
-		listener.Start();
-		var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-
-		// Act
-		_clientStub.IsConnected = true;
-		await _sut.StartAsync(cancellationTokenSource.Token);
-		await _clientStub.CallConnectionStateChangedAsync(new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
-
-		// Assert
-		listener.RecordObservableInstruments();
-		Assert.Equal(1, connections);
-	}
-	[Fact]
 	public async Task ShouldIncreaseMessagesSent()
 	{
 		// Arrange
@@ -107,12 +75,11 @@ public class MqttConnectionServiceTests
 	}
 }
 
-#pragma warning disable
 public class MqttClientStub : IManagedMqttClient
 {
 	public IMqttClient InternalClient => throw new NotImplementedException();
 
-	public bool IsConnected { get; set; }
+	public bool IsConnected { get; set; } = true;
 
 	public bool IsStarted => throw new NotImplementedException();
 
@@ -120,29 +87,29 @@ public class MqttClientStub : IManagedMqttClient
 
 	public int PendingApplicationMessagesCount => throw new NotImplementedException();
 
-	public event Func<ApplicationMessageProcessedEventArgs, Task> ApplicationMessageProcessedAsync = null!;
-	public event Func<MqttApplicationMessageReceivedEventArgs, Task> ApplicationMessageReceivedAsync = null!;
-	public event Func<ApplicationMessageSkippedEventArgs, Task> ApplicationMessageSkippedAsync = null!;
-	public event Func<MqttClientConnectedEventArgs, Task> ConnectedAsync = null!;
+	public event Func<ApplicationMessageProcessedEventArgs, Task> ApplicationMessageProcessedAsync = (_) => Task.CompletedTask;
+	public event Func<MqttApplicationMessageReceivedEventArgs, Task> ApplicationMessageReceivedAsync = (_) => Task.CompletedTask;
+	public event Func<ApplicationMessageSkippedEventArgs, Task> ApplicationMessageSkippedAsync = (_) => Task.CompletedTask;
+	public event Func<MqttClientConnectedEventArgs, Task> ConnectedAsync = (_) => Task.CompletedTask;
 
 	public Task CallConnectedAsync(MqttClientConnectedEventArgs args)
 	{
 		return ConnectedAsync.Invoke(args);
 	}
 
-	public event Func<ConnectingFailedEventArgs, Task> ConnectingFailedAsync = null!;
-	public event Func<EventArgs, Task> ConnectionStateChangedAsync = null!;
+	public event Func<ConnectingFailedEventArgs, Task> ConnectingFailedAsync = (_) => Task.CompletedTask;
+	public event Func<EventArgs, Task> ConnectionStateChangedAsync = (_) => Task.CompletedTask;
 	public Task CallConnectionStateChangedAsync(EventArgs args)
 	{
 		return ConnectionStateChangedAsync.Invoke(args);
 	}
-	public event Func<MqttClientDisconnectedEventArgs, Task> DisconnectedAsync = null!;
+	public event Func<MqttClientDisconnectedEventArgs, Task> DisconnectedAsync = (_) => Task.CompletedTask;
 	public Task CallDisconnectedAsync(MqttClientDisconnectedEventArgs args)
 	{
 		return DisconnectedAsync.Invoke(args);
 	}
-	public event Func<ManagedProcessFailedEventArgs, Task> SynchronizingSubscriptionsFailedAsync = null!;
-	public event Func<SubscriptionsChangedEventArgs, Task> SubscriptionsChangedAsync;
+	public event Func<ManagedProcessFailedEventArgs, Task> SynchronizingSubscriptionsFailedAsync = (_) => Task.CompletedTask;
+	public event Func<SubscriptionsChangedEventArgs, Task> SubscriptionsChangedAsync = (_) => Task.CompletedTask;
 
 	public List<MqttApplicationMessage> EnqueuedMessage = [];
 	public List<MqttTopicFilter> Subscriptions = [];

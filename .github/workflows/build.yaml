@@ -32,7 +32,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.100"
+          dotnet-version: "10.0.100"
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -50,7 +50,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.100"
+          dotnet-version: "10.0.100"
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
